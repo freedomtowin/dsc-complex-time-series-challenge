@@ -148,7 +148,7 @@ SST: 9765197379.99
  
 R^2: 0.813150750796
 
-#### Coefficients
+#### Coefficients:
 
 [ 8.10030680e+03]
 
@@ -176,6 +176,8 @@ SST: 9765197379.99
  
 R^2: 0.813150750796
 
+#### Coefficients:
+
 [ 1.15000991e+04]
 
 [ -2.75598163e+03]
@@ -194,7 +196,8 @@ R^2: 0.813150750796
 
 [ 2.50742897e-02]
 
-The results are almost (if not) exactly the same, so which method to choose?
+#### The results are almost (if not) exactly the same, so which method to choose?
 
 Dummy coding is one thing that can be automated, but its not always easy to type every variable to include in a linear model. The advantage of  dummy coding is that its more difficult to go wrong with because each level is accounted for. Using signal processing, frequencies need to be chosen for the seasonal components which requires some inspection and maybe some trail and error. The plus side is that you can choose which periods make sense and you can choose frequencies for trend component while you work on the seasonal part.
+
 All in all, both methods ended up with the same number of parameters and had the same performance.
