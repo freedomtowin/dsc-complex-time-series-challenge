@@ -112,7 +112,7 @@ If you want to see how I included these frequency components in a regression mod
 
 This table shows the index, weekday, and other time variables that will help me illustrate what I mean by periods or cycles.  My index starts at 1, but this corresponds to weekday 3 (or Wednesday). So index 6 corresponds to Monday and index 2 corresponds to Thursday. 
 
-<p>  <img src="https://cloud.githubusercontent.com/assets/21232362/22960618/ce7fe118-f304-11e6-8a45-d4606b04b4b3.png"  height="300px" align="bottom" hspace="250">
+<p>  <img src="https://cloud.githubusercontent.com/assets/21232362/22960618/ce7fe118-f304-11e6-8a45-d4606b04b4b3.png"  height="300px" align="bottom" hspace="10">
 </p>
 
 #### Fitting the Model
