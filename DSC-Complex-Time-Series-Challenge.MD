@@ -88,6 +88,7 @@ The lower frequency components were removed and the other, distinct frequencies 
 
 
 Frequency Component, Magnitude
+
 [  1.41666667e-01   2.42782136e+02] 
 
 [  1.43333333e-01   6.00386477e+02] 
