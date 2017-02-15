@@ -32,17 +32,17 @@ I used an FFT transformation to visualize the magnitude of the frequency compone
 
 Frequency Component, Magnitude
 
-[  1.41666667e-01   1.82239797e+05]
+[  1.41666667e-01  ,  1.82239797e+05]
 
-[  1.43333333e-01   5.67160341e+05]
+[  1.43333333e-01  ,  5.67160341e+05]
 
-[  2.83333333e-01   1.66899918e+05]
+[  2.83333333e-01  , 1.66899918e+05]
 
-[  2.85000000e-01   4.59942544e+05]
+[  2.85000000e-01  ,  4.59942544e+05]
 
-[  2.86666667e-01   3.95441559e+05]
+[  2.86666667e-01  ,  3.95441559e+05]
 
-[  4.28333333e-01   2.03492985e+05]
+[  4.28333333e-01  ,  2.03492985e+05]
 
 #### Does it make sense to reuse frequencies for the trend and seasonal components?
 On one hand, it might be better not to miss anything. I doubt there will be a prominant trend for -a weekday- every 28 weeks.
