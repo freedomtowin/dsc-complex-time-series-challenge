@@ -43,7 +43,11 @@ On one hand, it might be better not to miss anything. I doubt there will be a pr
 For the trend component, it would makes sense to use the lowest frequencies with the highest magnitudes.
 For the seasonal component, there are "interesting" frequencies around .143, .285, and .428.
 
+<p>  <img src="https://cloud.githubusercontent.com/assets/21232362/22960376/c0ed8f34-f302-11e6-9c11-811685606545.png"  height="300px" align="bottom" hspace="250">
+</p>
 
+<p>  <img src="https://cloud.githubusercontent.com/assets/21232362/22960379/c7549692-f302-11e6-935e-29271041eef0.png"  height="300px" align="bottom" hspace="250">
+</p>
 
 
 #### Finding seasonal patterns in the target variable:
