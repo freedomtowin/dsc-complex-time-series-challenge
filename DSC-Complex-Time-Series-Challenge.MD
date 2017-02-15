@@ -105,3 +105,9 @@ Frequency Component, Magnitude
 #### Eureka! Weekday shares the same frequency components as Pageviews!
 I found dominant frequencies at .143, .285, and .428. These correspond to T=7.14,3.5, and 2.33. There were also some frequencies around the e-3 orders of magnitude. These were at .00166, .00333, and 0.005 and had periods upwards of 200. 
 If you want to see how I included these frequency components in a regression model please see my Github. The results are compared to straight up dummy coding (the results are the same).  
+
+
+This table shows the index, weekday, and other time variables that will help me illustrate what I mean by periods or cycles.  My index starts at 1, but this corresponds to weekday 3 (or Wednesday). So index 6 corresponds to Monday and index 2 corresponds to Thursday. 
+
+<p>  <img src="https://cloud.githubusercontent.com/assets/21232362/22960618/ce7fe118-f304-11e6-8a45-d4606b04b4b3.png"  height="300px" align="bottom" hspace="250">
+</p>
