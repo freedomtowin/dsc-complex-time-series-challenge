@@ -47,7 +47,9 @@ Frequency Component, Magnitude
 #### Does it make sense to reuse frequencies for the trend and seasonal components?
 On one hand, it might be better not to miss anything. I doubt there will be a prominant trend for -a weekday- every 28 weeks.
 For the trend component, it would makes sense to use the lowest frequencies with the highest magnitudes.
-For the seasonal component, there are "interesting" frequencies around .143, .285, and .428.
+
+I found dominant frequencies at .143, .285, and .428. These correspond to T=7.14,3.5, and 2.33. The reason why those frequencies are interesting is because they are "sticking out." Which is shows there is probably a seasonal component that has a reasonable period, T (cycles/second). There were also some frequencies around the e-3 orders of magnitude. These were at .00166, .00333, and 0.005, T>200, which were included in the trend.
+
 
 <p>  <img src="https://cloud.githubusercontent.com/assets/21232362/22960376/c0ed8f34-f302-11e6-9c11-811685606545.png"  height="300px" align="bottom" hspace="250">
 </p>
@@ -55,6 +57,7 @@ For the seasonal component, there are "interesting" frequencies around .143, .28
 <p>  <img src="https://cloud.githubusercontent.com/assets/21232362/22960379/c7549692-f302-11e6-935e-29271041eef0.png"  height="300px" align="bottom" hspace="250">
 </p>
 
+This trend component would be entered into the regression model as an independent variable.
 
 #### Finding seasonal patterns in the target variable:
 The overall trend could be removed by creating a differenced variable for Pageviews The differenced variable allows for seasonal components to be identified more clearly.
@@ -111,3 +114,87 @@ This table shows the index, weekday, and other time variables that will help me 
 
 <p>  <img src="https://cloud.githubusercontent.com/assets/21232362/22960618/ce7fe118-f304-11e6-8a45-d4606b04b4b3.png"  height="300px" align="bottom" hspace="250">
 </p>
+
+#### Fitting the Model
+
+I will include a P(t) component as the squared value of the index, sq_index, the trend component as T(t), and the seasonal components as S(t). Since T(t) and P(t) are already created, this part of the blog will focus on S(t).
+
+<p>  <img src="https://cloud.githubusercontent.com/assets/21232362/22960693/812d6646-f305-11e6-8973-a9f4dbe269ac.png"  height="300px" align="bottom" hspace="250">
+</p>
+
+Each seasonal component is made up of two sinusoidal waves, i.e. β1*sin(t/T) + β2*cos(t/T). The cosine term is include to account for phase shift. The beta coefficients are the estimated parameter weights for each sinusoid. Since 3 frequencies are included in the model, there will be 6 sinusoids and 6 beta coefficients to estimate. For the time component, t, I used the actual "weekday" variable.
+
+In the regression model, each of these components will get a weight associated with it. When all of them are added up together with their respective weights, you should see a pattern similar to Pageviews.
+
+<p>  <img src="https://cloud.githubusercontent.com/assets/21232362/22960739/f75b0044-f305-11e6-9bd3-507a8a1d0591.png"  height="300px" align="bottom" hspace="250">
+</p>
+
+<p>  <img src="https://cloud.githubusercontent.com/assets/21232362/22960753/12203d90-f306-11e6-95f5-ea15621b8417.png"  height="300px" align="bottom" hspace="250">
+</p>
+
+There are two peaks at indexes 2 and 6 which correspond to Monday and Thursday. This is consistent with the problem solution given above.
+
+The model was fit on the training set with 600 observations. Its interesting that the model fitted with sinusoids gave almost the same R-squared value as including a dummy coded weekday variable in the model. The coefficients are obviously much different, but the results are eerily similar.
+
+
+<p>  <img src="https://cloud.githubusercontent.com/assets/21232362/22960805/78ab44d8-f306-11e6-8b2f-fe767ac09aa1.png"  height="300px" align="bottom" hspace="250">
+</p>
+
+#### Model fitted with sinusoid terms:
+
+SSE: 1824619798.78
+ 
+SST: 9765197379.99
+ 
+R^2: 0.813150750796
+
+#### Coefficients
+
+[ 8.10030680e+03]
+
+[ 1.55909280e+03]
+
+[ 2.23320858e+03]
+
+[ 1.52632878e+02]
+
+[ -1.26500151e+03]
+
+[ -3.93921325e+02]
+
+[ -7.03090816e+02]
+
+[ 7.94011068e-01]
+
+[ 2.50742897e-02]
+
+#### Model fitted with dummy coded results
+
+SSE: 1824619798.78
+ 
+SST: 9765197379.99
+ 
+R^2: 0.813150750796
+
+[ 1.15000991e+04]
+
+[ -2.75598163e+03]
+
+[ -3.28854678e+03]
+
+[ -1.44911713e+03]
+
+[ -3.65450388e+03]
+
+[ -6.91319555e+03]
+
+[ -5.75584347e+03]
+
+[ 7.94011068e-01]
+
+[ 2.50742897e-02]
+
+The results are almost (if not) exactly the same, so which method to choose?
+
+Dummy coding is one thing that can be automated, but its not always easy to type every variable to include in a linear model. The advantage of  dummy coding is that its more difficult to go wrong with because each level is accounted for. Using signal processing, frequencies need to be chosen for the seasonal components which requires some inspection and maybe some trail and error. The plus side is that you can choose which periods make sense and you can choose frequencies for trend component while you work on the seasonal part.
+All in all, both methods ended up with the same number of parameters and had the same performance.
