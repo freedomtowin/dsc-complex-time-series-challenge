@@ -168,6 +168,7 @@ R^2: 0.813150750796
 
 [ 2.50742897e-02]
 
+
 #### Model fitted with dummy coded results
 
 SSE: 1824619798.78
@@ -195,6 +196,16 @@ R^2: 0.813150750796
 [ 7.94011068e-01]
 
 [ 2.50742897e-02]
+
+#### Predicted & Actual Over Time
+
+<p>  <img src="https://cloud.githubusercontent.com/assets/21232362/22960929/6f849642-f307-11e6-9b42-904412dc8633.png"  height="300px" align="bottom" hspace="250">
+</p>
+
+#### Residuals
+
+<p>  <img src="https://cloud.githubusercontent.com/assets/21232362/22960934/7e9e7a3a-f307-11e6-96c4-b34a64791b40.png"  height="300px" align="bottom" hspace="250">
+</p>
 
 #### The results are almost (if not) exactly the same, so which method to choose?
 
