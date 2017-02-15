@@ -32,10 +32,15 @@ I used an FFT transformation to visualize the magnitude of the frequency compone
 Frequency Component, Magnitude
 
 [  1.41666667e-01   1.82239797e+05]
+
 [  1.43333333e-01   5.67160341e+05]
+
 [  2.83333333e-01   1.66899918e+05]
+
 [  2.85000000e-01   4.59942544e+05]
+
 [  2.86666667e-01   3.95441559e+05]
+
 [  4.28333333e-01   2.03492985e+05]
 
 #### Does it make sense to reuse frequencies for the trend and seasonal components?
@@ -53,23 +58,38 @@ For the seasonal component, there are "interesting" frequencies around .143, .28
 #### Finding seasonal patterns in the target variable:
 The overall trend could be removed by creating a differenced variable for Pageviews The differenced variable allows for seasonal components to be identified more clearly.
 
+<p>  <img src="https://cloud.githubusercontent.com/assets/21232362/22960381/cd49520e-f302-11e6-945b-6c26f899ee4e.png"  height="300px" align="bottom" hspace="250">
+</p>
+
+<p>  <img src="https://cloud.githubusercontent.com/assets/21232362/22960388/d31bb118-f302-11e6-8a57-8800cead4425.png"  height="300px" align="bottom" hspace="250">
+</p>
+
 
 Frequency Component, Magnitude
 
-[  1.43333333e-01   5.00831933e+05] 
+[  1.43333333e-01   5.00831933e+05]
+
 [  2.83333333e-01   2.65832489e+05] 
+
 [  2.85000000e-01   7.24904464e+05] 
+
 [  2.86666667e-01   6.13035227e+05] 
+
 [  2.88333333e-01   1.92922452e+05] 
+
 [  4.28333333e-01   4.04206565e+05]
 
 The lower frequency components were removed and the other, distinct frequencies were amplified. This makes the frequencies easier to filter! Also it makes it easier to compare to possible seasonal variables.
  
-Finding the seasonal predictor variable:
+#### Finding the seasonal predictor variable:
+
+<p>  <img src="https://cloud.githubusercontent.com/assets/21232362/22960389/d8bdb8aa-f302-11e6-9056-d781a2dd8b34.png"  height="300px" align="bottom" hspace="250">
+</p>
 
 
 Frequency Component, Magnitude
 [  1.41666667e-01   2.42782136e+02] 
+
 [  1.43333333e-01   6.00386477e+02] 
 
 [  1.45000000e-01   1.31981640e+02] 
@@ -79,6 +99,7 @@ Frequency Component, Magnitude
 [  2.86666667e-01   2.07887576e+02] 
 
 [  4.28333333e-01   2.97539156e+02]
-Eureka! Weekday shares the same frequency components as Pageviews!
+
+#### Eureka! Weekday shares the same frequency components as Pageviews!
 I found dominant frequencies at .143, .285, and .428. These correspond to T=7.14,3.5, and 2.33. There were also some frequencies around the e-3 orders of magnitude. These were at .00166, .00333, and 0.005 and had periods upwards of 200. 
 If you want to see how I included these frequency components in a regression model please see my Github. The results are compared to straight up dummy coding (the results are the same).  
