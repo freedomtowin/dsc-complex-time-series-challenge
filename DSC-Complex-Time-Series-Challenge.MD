@@ -202,8 +202,10 @@ R^2: 0.813150750796
 </p>
 
 
-<p>Residuals<img src="https://cloud.githubusercontent.com/assets/21232362/22960934/7e9e7a3a-f307-11e6-96c4-b34a64791b40.png"  height="300px" align="bottom" hspace="250">
+<p> <img src="https://cloud.githubusercontent.com/assets/21232362/22960934/7e9e7a3a-f307-11e6-96c4-b34a64791b40.png"  height="300px" align="bottom" hspace="250">
 </p>
+
+There is a slightly overall trend in the residual plot. Including lower frequency components could help stablize errors.
 
 #### The results are almost (if not) exactly the same, so which method to choose?
 
