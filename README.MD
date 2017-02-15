@@ -71,17 +71,17 @@ The overall trend could be removed by creating a differenced variable for Pagevi
 
 Frequency Component, Magnitude
 
-[  1.43333333e-01   5.00831933e+05]
+[  1.43333333e-01  ,  5.00831933e+05]
 
-[  2.83333333e-01   2.65832489e+05] 
+[  2.83333333e-01  ,  2.65832489e+05] 
 
-[  2.85000000e-01   7.24904464e+05] 
+[  2.85000000e-01  , 7.24904464e+05] 
 
-[  2.86666667e-01   6.13035227e+05] 
+[  2.86666667e-01  ,  6.13035227e+05] 
 
-[  2.88333333e-01   1.92922452e+05] 
+[  2.88333333e-01  ,  1.92922452e+05] 
 
-[  4.28333333e-01   4.04206565e+05]
+[  4.28333333e-01  ,  4.04206565e+05]
 
 The lower frequency components were removed and the other, distinct frequencies were amplified. This makes the frequencies easier to filter! Also it makes it easier to compare to possible seasonal variables.
  
@@ -93,17 +93,17 @@ The lower frequency components were removed and the other, distinct frequencies 
 
 Frequency Component, Magnitude
 
-[  1.41666667e-01   2.42782136e+02] 
+[  1.41666667e-01   , 2.42782136e+02] 
 
-[  1.43333333e-01   6.00386477e+02] 
+[  1.43333333e-01  ,  6.00386477e+02] 
 
-[  1.45000000e-01   1.31981640e+02] 
+[  1.45000000e-01  ,  1.31981640e+02] 
 
-[  2.85000000e-01   2.78344410e+02] 
+[  2.85000000e-01  ,  2.78344410e+02] 
 
-[  2.86666667e-01   2.07887576e+02] 
+[  2.86666667e-01  ,  2.07887576e+02] 
 
-[  4.28333333e-01   2.97539156e+02]
+[  4.28333333e-01  ,  2.97539156e+02]
 
 #### Eureka! Weekday shares the same frequency components as Pageviews!
 I found dominant frequencies at .143, .285, and .428. These correspond to T=7.14,3.5, and 2.33. There were also some frequencies around the e-3 orders of magnitude. These were at .00166, .00333, and 0.005 and had periods upwards of 200. 
@@ -150,23 +150,15 @@ R^2: 0.813150750796
 
 #### Coefficients:
 
-[ 8.10030680e+03]
-
-[ 1.55909280e+03]
-
-[ 2.23320858e+03]
-
-[ 1.52632878e+02]
-
-[ -1.26500151e+03]
-
-[ -3.93921325e+02]
-
-[ -7.03090816e+02]
-
-[ 7.94011068e-01]
-
-[ 2.50742897e-02]
+1. [ 8.10030680e+03]
+2. [ 1.55909280e+03]
+3. [ 2.23320858e+03]
+4. [ 1.52632878e+02]
+5. [ -1.26500151e+03]
+6. [ -3.93921325e+02]
+7. [ -7.03090816e+02]
+8. [ 7.94011068e-01]
+9. [ 2.50742897e-02]
 
 
 #### Model fitted with dummy coded results
@@ -179,23 +171,15 @@ R^2: 0.813150750796
 
 #### Coefficients:
 
-[ 1.15000991e+04]
-
-[ -2.75598163e+03]
-
-[ -3.28854678e+03]
-
-[ -1.44911713e+03]
-
-[ -3.65450388e+03]
-
-[ -6.91319555e+03]
-
-[ -5.75584347e+03]
-
-[ 7.94011068e-01]
-
-[ 2.50742897e-02]
+1.	[ 1.15000991e+04]
+2.	[ -2.75598163e+03]
+3.	[ -3.28854678e+03]
+4.	[ -1.44911713e+03]
+5.	[ -3.65450388e+03]
+6.	[ -6.91319555e+03]
+7.	[ -5.75584347e+03]
+8.	[ 7.94011068e-01]
+9.	[ 2.50742897e-02]
 
 
 <p> <img src="https://cloud.githubusercontent.com/assets/21232362/22960929/6f849642-f307-11e6-9b42-904412dc8633.png"  height="300px" align="bottom" hspace="250">
