@@ -1,4 +1,4 @@
-## How signal processing can be used to identify patterns in complex time series
+# How signal processing can be used to identify patterns in complex time series
 
 This was a fun, machine learning side project so I didn't have any business context to do it. Originally, I included links and references, but they were against the "one link" rule of posting blogs on here. Also, I wanted to included additional material, but I think there is a limit to how many pics I can post. I will try to show what objective I was trying to accomplish.
 
