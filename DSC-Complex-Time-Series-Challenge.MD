@@ -5,15 +5,21 @@ The original problem statement was given here: http://www.datasciencecentral.com
 I saw a DSC article that talked about finding trends using signal processing techniques. http://www.datasciencecentral.com/profiles/blogs/how-we-combined-di... . The trend component could be created and entered into the regression model as an independent variable. I should the trend component in one of the figures above. I think it wouldn't make sense to reuse frequencies components from the trend component because their periods (cycles/seconds) are very large (upwards of 200 days).
 
 The trend and seasonality can be accounted for in a linear model by including sinusoidal components with a given frequency. However, finding the appropriate frequency for each sinusoidal component requires a little more digging. This post shows how to use fast Fourier transforms to find these frequencies.
+
 Defining the model:
 y = P(t) + S(t) + T(t) + R(t)
+
 P(t)~Polynomial component
 S(t)~Seasonal component
 T(t)~Trend component
 R(t)~Residual error
+
 For the purposes of this post, we will only focus on the T(t) and S(t) components. The actual model fitting will be done in a separate post.
+
 600 observations were used in the training set. The result was tested on the full dataset with 731 observations.
 
+<p>  <img src="https://cloud.githubusercontent.com/assets/21232362/22960357/a9e2d77c-f302-11e6-83f7-f8a218b88e06.png"  height="300px" align="bottom" hspace="250">
+</p>
 
 Find the overall trend:
 I used an FFT transformation to visualize the magnitude of the frequency components in the time series. To be specific, the absolute magnitude is plotted.
