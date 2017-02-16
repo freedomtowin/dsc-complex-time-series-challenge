@@ -21,7 +21,7 @@ For the purposes of this post, we will only focus on the T(t) and S(t) component
 
 600 observations were used in the training set. The result was tested on the full dataset with 731 observations.
 
-<p>  <img src="https://cloud.githubusercontent.com/assets/21232362/22960357/a9e2d77c-f302-11e6-83f7-f8a218b88e06.png"  height="300px" align="bottom" hspace="250">
+<p>  <img src="https://cloud.githubusercontent.com/assets/21232362/22960357/a9e2d77c-f302-11e6-83f7-f8a218b88e06.png" >
 </p>
 
 #### Find the overall trend:
