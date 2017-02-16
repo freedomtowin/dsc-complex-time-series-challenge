@@ -90,6 +90,7 @@ The lower frequency components were removed and the other, distinct frequencies 
 <p>  <img src="https://cloud.githubusercontent.com/assets/21232362/22960389/d8bdb8aa-f302-11e6-9056-d781a2dd8b34.png"  height="300px" align="bottom" hspace="250">
 </p>
 
+The overall trend could be removed by creating a differenced variable for Pageviews The differenced variable allows for seasonal components to be identified more clearly.
 
 Frequency Component, Magnitude
 
