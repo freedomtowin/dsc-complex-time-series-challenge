@@ -185,7 +185,7 @@ R^2: 0.813150750796
 
 
 <p> <img src="https://cloud.githubusercontent.com/assets/21232362/22960929/6f849642-f307-11e6-9b42-904412dc8633.png" >
- height="400px" align="bottom" hspace="0"</p>
+ height="300px" align="bottom" hspace="10"</p>
 
 
 <p> <img src="https://cloud.githubusercontent.com/assets/21232362/22960934/7e9e7a3a-f307-11e6-96c4-b34a64791b40.png" >
