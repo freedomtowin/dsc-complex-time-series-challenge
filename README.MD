@@ -60,10 +60,11 @@ I found dominant frequencies at .143, .285, and .428. These correspond to T=7.14
 This trend component would be entered into the regression model as an independent variable.
 
 #### Finding seasonal patterns in the target variable:
-The overall trend could be removed by creating a differenced variable for Pageviews The differenced variable allows for seasonal components to be identified more clearly.
 
 <p>  <img src="https://cloud.githubusercontent.com/assets/21232362/22960381/cd49520e-f302-11e6-945b-6c26f899ee4e.png"  height="300px" align="bottom" hspace="250">
 </p>
+
+The overall trend could be removed by creating a differenced variable for Pageviews The differenced variable allows for seasonal components to be identified more clearly.
 
 <p>  <img src="https://cloud.githubusercontent.com/assets/21232362/22960388/d31bb118-f302-11e6-8a57-8800cead4425.png"  height="300px" align="bottom" hspace="250">
 </p>
