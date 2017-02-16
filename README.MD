@@ -140,7 +140,7 @@ The model was fit on the training set with 600 observations. Its interesting tha
 
 
 <p>  <img src="https://cloud.githubusercontent.com/assets/21232362/22960805/78ab44d8-f306-11e6-8b2f-fe767ac09aa1.png" >
-height="400px" align="bottom" hspace="0"</p>
+height="300px" align="bottom" hspace="10"</p>
 
 #### Model fitted with sinusoid terms:
 
