@@ -27,7 +27,7 @@ For the purposes of this post, we will only focus on the T(t) and S(t) component
 #### Find the overall trend:
 I used an FFT transformation to visualize the magnitude of the frequency components in the time series. To be specific, the absolute magnitude is plotted.
 
-<p>  <img src="https://cloud.githubusercontent.com/assets/21232362/22960372/ba10e31e-f302-11e6-84c9-d8a5cd8f61ed.png"  height="300px" align="bottom" hspace="250">
+<p>  <img src="https://cloud.githubusercontent.com/assets/21232362/22960372/ba10e31e-f302-11e6-84c9-d8a5cd8f61ed.png"  >
 </p>
 
 Frequency Component, Magnitude
@@ -140,7 +140,7 @@ The model was fit on the training set with 600 observations. Its interesting tha
 
 
 <p>  <img src="https://cloud.githubusercontent.com/assets/21232362/22960805/78ab44d8-f306-11e6-8b2f-fe767ac09aa1.png" >
-</p>
+height="400px" align="bottom" hspace="0"</p>
 
 #### Model fitted with sinusoid terms:
 
@@ -185,7 +185,7 @@ R^2: 0.813150750796
 
 
 <p> <img src="https://cloud.githubusercontent.com/assets/21232362/22960929/6f849642-f307-11e6-9b42-904412dc8633.png" >
- height="300px" align="bottom" hspace="10"</p>
+</p>
 
 
 <p> <img src="https://cloud.githubusercontent.com/assets/21232362/22960934/7e9e7a3a-f307-11e6-96c4-b34a64791b40.png" >
