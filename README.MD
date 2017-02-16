@@ -51,7 +51,7 @@ For the trend component, it would makes sense to use the lowest frequencies with
 I found dominant frequencies at .143, .285, and .428. These correspond to T=7.14,3.5, and 2.33. The reason why those frequencies are interesting is because they are "sticking out." Which is shows there is probably a seasonal component that has a reasonable period, T (cycles/second). There were also some frequencies around the e-3 orders of magnitude. These were at .00166, .00333, and 0.005, T>200, which were included in the trend.
 
 
-<p>  <img src="https://cloud.githubusercontent.com/assets/21232362/22960376/c0ed8f34-f302-11e6-9c11-811685606545.png"  height="300px" align="bottom" hspace="250">
+<p>  <img src="https://cloud.githubusercontent.com/assets/21232362/22960376/c0ed8f34-f302-11e6-9c11-811685606545.png">
 </p>
 
 <p>  <img src="https://cloud.githubusercontent.com/assets/21232362/22960379/c7549692-f302-11e6-935e-29271041eef0.png"  height="300px" align="bottom" hspace="250">
