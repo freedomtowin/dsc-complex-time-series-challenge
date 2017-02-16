@@ -54,19 +54,19 @@ I found dominant frequencies at .143, .285, and .428. These correspond to T=7.14
 <p>  <img src="https://cloud.githubusercontent.com/assets/21232362/22960376/c0ed8f34-f302-11e6-9c11-811685606545.png">
 </p>
 
-<p>  <img src="https://cloud.githubusercontent.com/assets/21232362/22960379/c7549692-f302-11e6-935e-29271041eef0.png"  height="300px" align="bottom" hspace="250">
+<p>  <img src="https://cloud.githubusercontent.com/assets/21232362/22960379/c7549692-f302-11e6-935e-29271041eef0.png" >
 </p>
 
 This trend component would be entered into the regression model as an independent variable.
 
 #### Finding seasonal patterns in the target variable:
 
-<p>  <img src="https://cloud.githubusercontent.com/assets/21232362/22960381/cd49520e-f302-11e6-945b-6c26f899ee4e.png"  height="300px" align="bottom" hspace="250">
+<p>  <img src="https://cloud.githubusercontent.com/assets/21232362/22960381/cd49520e-f302-11e6-945b-6c26f899ee4e.png" >
 </p>
 
 The overall trend could be removed by creating a differenced variable for Pageviews The differenced variable allows for seasonal components to be identified more clearly.
 
-<p>  <img src="https://cloud.githubusercontent.com/assets/21232362/22960388/d31bb118-f302-11e6-8a57-8800cead4425.png"  height="300px" align="bottom" hspace="250">
+<p>  <img src="https://cloud.githubusercontent.com/assets/21232362/22960388/d31bb118-f302-11e6-8a57-8800cead4425.png" >
 </p>
 
 
@@ -88,7 +88,7 @@ The lower frequency components were removed and the other, distinct frequencies 
  
 #### Finding the seasonal predictor variable:
 
-<p>  <img src="https://cloud.githubusercontent.com/assets/21232362/22960389/d8bdb8aa-f302-11e6-9056-d781a2dd8b34.png"  height="300px" align="bottom" hspace="250">
+<p>  <img src="https://cloud.githubusercontent.com/assets/21232362/22960389/d8bdb8aa-f302-11e6-9056-d781a2dd8b34.png" >
 </p>
 
 The overall trend could be removed by creating a differenced variable for Pageviews The differenced variable allows for seasonal components to be identified more clearly.
@@ -114,24 +114,24 @@ If you want to see how I included these frequency components in a regression mod
 
 This table shows the index, weekday, and other time variables that will help me illustrate what I mean by periods or cycles.  My index starts at 1, but this corresponds to weekday 3 (or Wednesday). So index 6 corresponds to Monday and index 2 corresponds to Thursday. 
 
-<p>  <img src="https://cloud.githubusercontent.com/assets/21232362/22960618/ce7fe118-f304-11e6-8a45-d4606b04b4b3.png"  height="300px" align="bottom" hspace="10">
+<p>  <img src="https://cloud.githubusercontent.com/assets/21232362/22960618/ce7fe118-f304-11e6-8a45-d4606b04b4b3.png" >
 </p>
 
 #### Fitting the Model
 
 I will include a P(t) component as the squared value of the index, sq_index, the trend component as T(t), and the seasonal components as S(t). Since T(t) and P(t) are already created, this part of the blog will focus on S(t).
 
-<p>  <img src="https://cloud.githubusercontent.com/assets/21232362/22960693/812d6646-f305-11e6-8973-a9f4dbe269ac.png"  height="300px" align="bottom" hspace="250">
+<p>  <img src="https://cloud.githubusercontent.com/assets/21232362/22960693/812d6646-f305-11e6-8973-a9f4dbe269ac.png" >
 </p>
 
 Each seasonal component is made up of two sinusoidal waves, i.e. β1*sin(t/T) + β2*cos(t/T). The cosine term is include to account for phase shift. The beta coefficients are the estimated parameter weights for each sinusoid. Since 3 frequencies are included in the model, there will be 6 sinusoids and 6 beta coefficients to estimate. For the time component, t, I used the actual "weekday" variable.
 
 In the regression model, each of these components will get a weight associated with it. When all of them are added up together with their respective weights, you should see a pattern similar to Pageviews.
 
-<p>  <img src="https://cloud.githubusercontent.com/assets/21232362/22960739/f75b0044-f305-11e6-9bd3-507a8a1d0591.png"  height="300px" align="bottom" hspace="250">
+<p>  <img src="https://cloud.githubusercontent.com/assets/21232362/22960739/f75b0044-f305-11e6-9bd3-507a8a1d0591.png" >
 </p>
 
-<p>  <img src="https://cloud.githubusercontent.com/assets/21232362/22960753/12203d90-f306-11e6-95f5-ea15621b8417.png"  height="300px" align="bottom" hspace="250">
+<p>  <img src="https://cloud.githubusercontent.com/assets/21232362/22960753/12203d90-f306-11e6-95f5-ea15621b8417.png" >
 </p>
 
 There are two peaks at indexes 2 and 6 which correspond to Monday and Thursday. This is consistent with the problem solution given above.
@@ -139,7 +139,7 @@ There are two peaks at indexes 2 and 6 which correspond to Monday and Thursday. 
 The model was fit on the training set with 600 observations. Its interesting that the model fitted with sinusoids gave almost the same R-squared value as including a dummy coded weekday variable in the model. The coefficients are obviously much different, but the results are eerily similar.
 
 
-<p>  <img src="https://cloud.githubusercontent.com/assets/21232362/22960805/78ab44d8-f306-11e6-8b2f-fe767ac09aa1.png"  height="300px" align="bottom" hspace="10">
+<p>  <img src="https://cloud.githubusercontent.com/assets/21232362/22960805/78ab44d8-f306-11e6-8b2f-fe767ac09aa1.png" >
 </p>
 
 #### Model fitted with sinusoid terms:
@@ -184,11 +184,11 @@ R^2: 0.813150750796
 9.	[ 2.50742897e-02]
 
 
-<p> <img src="https://cloud.githubusercontent.com/assets/21232362/22960929/6f849642-f307-11e6-9b42-904412dc8633.png"  height="300px" align="bottom" hspace="250">
+<p> <img src="https://cloud.githubusercontent.com/assets/21232362/22960929/6f849642-f307-11e6-9b42-904412dc8633.png" >
 </p>
 
 
-<p> <img src="https://cloud.githubusercontent.com/assets/21232362/22960934/7e9e7a3a-f307-11e6-96c4-b34a64791b40.png"  height="300px" align="bottom" hspace="250">
+<p> <img src="https://cloud.githubusercontent.com/assets/21232362/22960934/7e9e7a3a-f307-11e6-96c4-b34a64791b40.png" >
 </p>
 
 There is a slightly overall trend in the residual plot. Including lower frequency components could help stablize errors.
