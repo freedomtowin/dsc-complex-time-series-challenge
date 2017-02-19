@@ -1,6 +1,6 @@
 # How signal processing can be used to identify patterns in complex time series
 
-This was a fun, machine learning side project so I didn't have any business context to do it. Originally, I included links and references, but they were against the "one link" rule of posting blogs on here. Also, I wanted to included additional material, but I think there is a limit to how many pics I can post. I will try to show what objective I was trying to accomplish.
+This was a fun, machine learning side project so I didn't have any business context to do it.
 
 #### The original problem statement was given here: http://www.datasciencecentral.com/forum/topics/challenge-of-the-week-identifying-patterns-in-complex-time-series
 There was also a verbal solution given in the members only section. I'm not sure if its legal to share the whole thing, but here is an excerpt of the solution. " The time series has a weekly periodicity with two peaks: Monday and Thursday, corresponding respectively to the publication of the Monday and Thursday digests. The impact of the Monday and Thursday email blasts extent over the next day; this makes measuring the yield more difficult, unless you use additional data, e.g. from our newsletter vendor. However, the bulk of the impact is really on Monday and Thursday."
