@@ -138,7 +138,7 @@ There are two peaks at indexes 2 and 6 which correspond to Monday and Thursday. 
 
 #### Training Data
 
-The model was fit on the training set with 600 observations. Its interesting that the model fitted with sinusoids gave almost the same R-squared value as including a dummy coded weekday variable in the model. The coefficients are obviously much different, but the results are eerily similar.
+The model was fitted on the training set with 600 observations. Its interesting that the model fitted with sinusoids gave almost the same R-squared value as including a dummy coded weekday variable in the model. The coefficients are obviously much different, but the results are eerily similar.
 
 
 <p>  <img src="https://cloud.githubusercontent.com/assets/21232362/22960805/78ab44d8-f306-11e6-8b2f-fe767ac09aa1.png" 
@@ -197,6 +197,7 @@ R^2: 0.813150750796
 
 #### Validation data
 
+The model was validated on the remaining 131 obeservations.The R-Square value was very similar between with both methods.
 
 #### Model fitted with sinusoid terms:
 
