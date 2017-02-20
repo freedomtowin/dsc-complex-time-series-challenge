@@ -136,12 +136,15 @@ In the regression model, each of these components will get a weight associated w
 
 There are two peaks at indexes 2 and 6 which correspond to Monday and Thursday. This is consistent with the problem solution given above.
 
+#### Training Data
+
 The model was fit on the training set with 600 observations. Its interesting that the model fitted with sinusoids gave almost the same R-squared value as including a dummy coded weekday variable in the model. The coefficients are obviously much different, but the results are eerily similar.
 
 
 <p>  <img src="https://cloud.githubusercontent.com/assets/21232362/22960805/78ab44d8-f306-11e6-8b2f-fe767ac09aa1.png" 
 height="500px" align="bottom" hspace="0">
 </p>
+
 
 #### Model fitted with sinusoid terms:
 
@@ -190,6 +193,32 @@ R^2: 0.813150750796
 
 
 <p> <img src="https://cloud.githubusercontent.com/assets/21232362/22960934/7e9e7a3a-f307-11e6-96c4-b34a64791b40.png" >
+</p>
+
+#### Validation data
+
+
+#### Model fitted with sinusoid terms:
+
+SSE:  1283531844.75
+
+SST:  2180040128.7
+
+R^2:  0.41123476222
+
+
+#### Model fitted with dummy coded results
+
+SSE:  1280695316.78
+
+SST:  2180040128.7
+
+R^2:  0.412535897884
+
+<p> <img src="https://cloud.githubusercontent.com/assets/21232362/23112196/1071eb78-f6f4-11e6-8dff-48fdbba8eee4.png" >
+</p>
+
+<p> <img src="https://cloud.githubusercontent.com/assets/21232362/23112198/1732405c-f6f4-11e6-950a-02d7be18b704.png" >
 </p>
 
 There is a slightly overall trend in the residual plot. Including lower frequency components could help stablize errors.
