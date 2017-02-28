@@ -135,23 +135,6 @@ def filter_trend(unfiltered,band,f_signal,threshold):
 I used an FFT transformation to visualize the magnitude of the frequency components in the time series. To be specific, the absolute magnitude is plotted.
 
 
-```python
-yf = np.fft.fft(train['Pageviews'])
-freq= np.fft.fftfreq(len(yf))
-N=len(yf)
-# xf = np.linspace(0.0, 1.0/(2.0*T), N/2)
-y_abs=( 2.0/N * np.abs(yf[:N//2]))
-
-plt.plot(freq[1:N//2],2.0/N * np.abs(yf[1:N//2]))
-plt.show()
-
-
-n=len(train)
-F_unfiltered  = np.column_stack((yf[1:n//2],freq[1:n//2]))
-print("Frequency, Magnitude")
-print(np.absolute(filter_trend(F_unfiltered, 0.2,0.3,500)))
-```
-
 
 ![png](Images/output_5_0.png)
 
@@ -171,38 +154,6 @@ For the trend component, it would makes sense to use the lowest frequencies with
 
 I found dominant frequencies at .143, .285, and .428. These correspond to T=7.14,3.5, and 2.33. The reason why those frequencies are interesting is because they are "sticking out." Which is shows there is probably a seasonal component that has a reasonable period, T (cycles/second). There were also some frequencies around the e-3 orders of magnitude. These were at .00166, .00333, and 0.005, T>200, which were included in the trend.
 
-
-```python
-n=len(train)
-
-F_unfiltered  = np.column_stack((yf[1:n//2],freq[1:n//2]))
-
-F_filtered = filter_trend(F_unfiltered, 0.05,0.055,1000)
-
-signal=np.zeros(len(train))
-t=np.arange(0,len(train))
-t_full=np.arange(0,len(full))
-signal_full=np.zeros(len(full))
-for i,x in F_filtered:
-    magnitude=np.absolute(x)/n
-    f=np.absolute(i)
-    phase=np.angle(x)
-    signal+= magnitude * np.cos(2*np.pi*t*f+phase)
-    signal_full+= magnitude * np.cos(2*np.pi*t_full*f+phase)
-train['trend']=signal
-full['trend']=signal_full
-
-plt.scatter((np.absolute(F_filtered)[:,0]),
-        (np.absolute(F_filtered)[:,1]))
-plt.title("Frequencies included in the trend")
-plt.show()
-
-plt.plot(t,signal,'-')
-plt.title('Trend component included the model')
-plt.show()
-```
-
-
 ![png](Images/output_7_0.png)
 
 
@@ -215,48 +166,10 @@ This trend component would be entered into the regression model as an independen
 #### Finding seasonal patterns in the target variable:
 
 
-```python
-temp={}
-temp['Pageviews_l']=[]
-for t in range(len(train)):
-    if t>0:
-        #temp['Pageviews_l'+str(i)].append()
-        temp['Pageviews_l'].append(train.ix[t]['Pageviews']-train.ix[t-1]['Pageviews'])
-        #print(train.ix[t]['S'+str(i)]-train.ix[t-1]['S'+str(i)])
-    else:
-        temp['Pageviews_l'].append(0)
-train['Pageviews_l']=temp['Pageviews_l']
-plt.plot(train['index'],train['Pageviews_l'],'-')
-plt.xlabel('time')
-plt.ylabel('Pageviews')
-plt.show()
-```
-
-
 ![png](output_9_0.png)
 
 
 The overall trend could be removed by creating a differenced variable for Pageviews The differenced variable allows for seasonal components to be identified more clearly.
-
-
-```python
-yf = np.fft.fft(train['Pageviews_l'])
-freq= np.fft.fftfreq(len(yf))
-# xf = np.linspace(0.0, 1.0/(2.0*T), N/2)
-y_abs=( 2.0/N * np.abs(yf[:N//2]))
-
-plt.plot(freq[1:N//2],2.0/N * np.abs(yf[1:N//2]))
-plt.title("pageviews: frequency domain")
-plt.show()
-
-threshold = np.mean(2.0/N * np.abs(yf[1:N//2]))+2*np.std(2.0/N * np.abs(yf[1:N//2]))
-n=len(train)
-F_unfiltered  = np.column_stack((yf[1:n//2],freq[1:n//2]))
-
-print("Frequency, Magnitude")
-print(np.absolute(filter_trend(F_unfiltered, 0.2,0.3,threshold)))
-```
-
 
 ![png](Images/output_11_0.png)
 
@@ -273,27 +186,6 @@ print(np.absolute(filter_trend(F_unfiltered, 0.2,0.3,threshold)))
 The lower frequency components were removed and the other, distinct frequencies were amplified. This makes the frequencies easier to filter! Also it makes it easier to compare to possible seasonal variables.
 
 #### Finding the seasonal predictor variable:
-
-
-```python
-for seasonal_component in seasonal_list:
-
-    yf = np.fft.fft(train[seasonal_component])
-    freq= np.fft.fftfreq(len(yf))
-#     xf = np.linspace(0.0, 1.0/(2.0*T), N/2)
-    y_abs=( 2.0/N * np.abs(yf[:N//2]))
-    #Threshold is set to two standard deviations above mean
-    threshold = np.mean(2.0/N * np.abs(yf[1:N//2]))+2*np.std(2.0/N * np.abs(yf[1:N//2]))
-    plt.plot(freq[1:N//2],2.0/N * np.abs(yf[1:N//2]))
-    plt.title(seasonal_component+": frequency domain")
-    plt.show()
-
-
-    n=len(train)
-    F_unfiltered  = np.column_stack((yf[1:n//2],freq[1:n//2]))
-    print(np.absolute(filter_trend(F_unfiltered, 0.299,0.3,threshold)))
-```
-
 
 ![png](Images/output_13_0.png)
 
@@ -312,17 +204,6 @@ If you want to see how I included these frequency components in a regression mod
 
 
 This table shows the index, weekday, and other time variables that will help me illustrate what I mean by periods or cycles.  My index starts at 1, but this corresponds to weekday 3 (or Wednesday). So index 6 corresponds to Monday and index 2 corresponds to Thursday. 
-
-
-```python
-weekday_dummies = pd.get_dummies(full.weekday, prefix='W').iloc[:, 1:]
-full = pd.concat([full, weekday_dummies], axis=1)
-full=full.sort_values(by=[time_component])
-train=full[:600].copy()
-valid=full[600:].copy()
-train.head(n=10)
-```
-
 
 
 
@@ -562,62 +443,6 @@ train.head(n=10)
 I will include a P(t) component as the squared value of the index, sq_index, the trend component as T(t), and the seasonal components as S(t). Since T(t) and P(t) are already created, this part of the blog will focus on S(t).
 
 
-```python
-def get_freqlist(seasonal_component_,threshold):
-    
-    yf = np.fft.fft(seasonal_component_)
-    freq= np.fft.fftfreq(len(yf))
-#     xf = np.linspace(0.0, 1.0/(2.0*T), N/2)
-    y_abs=( 2.0/N * np.abs(yf[:N//2]))
-    #Threshold is set to two standard deviations above mean
-    threshold = np.mean(2.0/N * np.abs(yf[1:N//2]))+2*np.std(2.0/N * np.abs(yf[1:N//2]))
-    plt.plot(freq[1:N//2],2.0/N * np.abs(yf[1:N//2]))
-    plt.title(seasonal_component+": frequency domain")
-    plt.show()
-
-
-    n=len(train)
-    F_unfiltered  = np.column_stack((yf[1:n//2],freq[1:n//2]))
-    print(np.absolute(filter_trend(F_unfiltered, 0.299,0.3,threshold)))
-```
-
-
-```python
-seasonal_list = ['weekday']
-```
-
-
-```python
-input_df2=train[seasonal_list]
-output=train[['Pageviews']]
-y=output.values
-input_=input_df2.values
-m,n =np.shape(input_)
-x=input_
-
-frequency_components=np.array([.1433,.2855,.428])
-frequency_components = 2*np.pi*np.outer(frequency_components,np.ones(x.shape[1])).reshape((len(frequency_components),x.shape[1]))
-
-trig_args = np.dot(frequency_components,x.T ).T
-seasonal_x = np.column_stack((np.sin(trig_args),np.cos(trig_args)))
-
-
-# print(seasonal_x)
-# plt.plot(train['index'],y,'.')
-
-
-plt.plot(train['index'][:10],seasonal_x[:10,0]+seasonal_x[:10,3],'-')
-plt.title("The first seasonal component")
-plt.show()
-plt.plot(train['index'][:10],seasonal_x[:10,1]+seasonal_x[:10,4],'-')
-plt.title("The second seasonal component")
-plt.show()
-plt.plot(train['index'][:10],seasonal_x[:10,2]+seasonal_x[:10,5],'-')
-plt.title("The third seasonal component")
-plt.show()
-```
-
-
 ![png](Images/output_19_0.png)
 
 
@@ -634,41 +459,9 @@ Each seasonal component is made up of two sinusoidal waves, i.e. β1*sin(t/T) + 
 In the regression model, each of these components will get a weight associated with it. When all of them are added up together with their respective weights, you should see a pattern similar to Pageviews.
 
 
-```python
-plt.plot(train['index'][:20],train['Pageviews'][:20],'-')
-plt.title("Pageviews")
-plt.show()
-
-
-m,n =np.shape(seasonal_x)
-print(m,n)
-# print(seasonal_x)
-# x=np.ones((m,n+3))
-# x[:,1:]=np.column_stack((seasonal_x,train['trend'],train['sq_index']))
-x=np.ones((m,n+1))
-x[:,1:]=seasonal_x
-
-
-
-A=x.T.dot(x)
-b=x.T.dot(y)
-z = np.linalg.solve(A,b)
-
-SSE=np.sum((y-x.dot(z))**2)
-print("SSE :",SSE)
-print("Baseline: ",sum((y-np.mean(y))**2)[0])
-
-# plt.plot(train['index'],y,'.') 
-plt.plot(train['index'][:20],x.dot(z)[:20],'-')
-plt.title("Weighted Addition of Seasonal Components")
-plt.show()
-```
-
-
 ![png](Images/output_21_0.png)
 
 
-    600 6
     SSE : 6919007526.26
     Baseline:  9765197379.99
 
@@ -686,59 +479,6 @@ The model was fitted on the training set with 600 observations. Its interesting 
 #### Model fitted with sinusoid terms:
 
 
-```python
-input_df2=train[seasonal_list]
-output=train[['Pageviews']]
-y=output.values
-input_=input_df2.values
-m,n =np.shape(input_)
-x=input_
-
-frequency_components=np.array([.1433,.2855,.428])
-frequency_components = 2*np.pi*np.outer(frequency_components,np.ones(x.shape[1])).reshape((len(frequency_components),x.shape[1]))
-
-trig_args = np.dot(frequency_components,x.T ).T
-seasonal_x = np.column_stack((np.sin(trig_args),np.cos(trig_args)))
-
-m,n =np.shape(seasonal_x)
-# print(seasonal_x)
-# x=np.ones((m,n+3))
-# x[:,1:]=np.column_stack((seasonal_x,train['trend'],train['sq_index']))
-x=np.ones((m,n+3))
-x[:,1:]=np.column_stack((seasonal_x,train['trend'],train['sq_index']))
-
-
-
-A=x.T.dot(x)
-b=x.T.dot(y)
-z = np.linalg.solve(A,b)
-
-SSE=np.sum((y-x.dot(z))**2)
-print("SSE :",SSE)
-print("Baseline: ",sum((y-np.mean(y))**2)[0])
-```
-
-    SSE : 1824619798.78
-    Baseline:  9765197379.99
-
-
-
-```python
-SSE=np.sum((y-x.dot(z))**2)
-SST=sum((y-np.mean(y))**2)[0]
-print("SSE: ",SSE)
-print("SST: ",SST)
-print("R^2: ",1-SSE/SST)
-
-
-plt.plot(train['index'],y,'.')
-plt.plot(train['index'],x.dot(z),'-')
-plt.title("Seasonally predicted Pageviews over time")
-plt.show()
-print("Coefficients:")
-z
-```
-
     SSE:  1824619798.78
     SST:  9765197379.99
     R^2:  0.813150750796
@@ -749,8 +489,6 @@ z
 
 
     Coefficients:
-
-
 
 
 
@@ -766,24 +504,6 @@ z
 
 
 
-
-```python
-peaks=[]
-for i,xz in enumerate(x.dot(z)):
-    if i>0 and i<len(x.dot(z))-1:
-        if x.dot(z)[i]>x.dot(z)[i-1] and x.dot(z)[i]>x.dot(z)[i+1]:
-            peaks.append(train['time'][i].isocalendar()[2])
-# print("peaks: ",np.unique(peaks))
-
-```
-
-
-```python
-plt.scatter(train['index'],y-x.dot(z))
-plt.show()
-```
-
-
 ![png](Images/output_26_0.png)
 
 
@@ -791,41 +511,6 @@ The residual plot is not indicative of a major seasonal pattern. There is a slig
 
 #### Validation
 
-
-```python
-
-input_df2=valid[seasonal_list]
-output=valid[['Pageviews']]
-y=output.values
-input_=input_df2.values
-m,n =np.shape(input_)
-x=input_
-
-frequency_components=np.array([.1433,.285,.428])
-frequency_components = 2*np.pi*np.outer(frequency_components,np.ones(x.shape[1])).reshape((len(frequency_components),x.shape[1]))
-
-trig_args = np.dot(frequency_components,x.T ).T
-seasonal_x = np.column_stack((np.sin(trig_args),np.cos(trig_args)))
-
-# m,n =np.shape(seasonal_x)
-m,n =np.shape(seasonal_x)
-# print(seasonal_x)
-x=np.ones((m,n+3))
-x[:,1:]=np.column_stack((seasonal_x,valid['trend'],valid['sq_index']))
-
-SSE=np.sum((y-x.dot(z))**2)
-SST=sum((y-np.mean(y))**2)[0]
-print("SSE: ",SSE)
-print("SST: ",SST)
-print("R^2: ",1-SSE/SST)
-
-plt.plot(valid['index'],valid[['Pageviews']],'.')
-plt.plot(valid['index'],x.dot(z),'-')
-plt.title("Seasonally predicted Pageviews over time")
-plt.show()
-
-
-```
 
     SSE:  1283531844.75
     SST:  2180040128.7
@@ -837,12 +522,6 @@ plt.show()
 
 
 
-```python
-plt.scatter(valid['index'],y-x.dot(z))
-plt.show()
-```
-
-
 ![png](Images/output_30_0.png)
 
 
@@ -852,51 +531,11 @@ There is a slightly overall trend in the residual plot. Including lower frequenc
 
 #### Model fitted with dummy coded weekday:
 
-
-```python
-input_df2=train[seasonal_list]
-output=train[['Pageviews']]
-y=output.values
-input_=input_df2.values
-m,n =np.shape(input_)
-x=input_
-
-x=np.ones((m,9))
-x[:,1:]=np.column_stack((train['W_2'],train['W_3'],
-                         train['W_4'],train['W_5'],train['W_6'],
-                         train['W_7'],train['trend'],train['sq_index']))
-
-
-A=x.T.dot(x)
-b=x.T.dot(y)
-z = np.linalg.solve(A,b)
-
-SSE=np.sum((y-x.dot(z))**2)
-SST=sum((y-np.mean(y))**2)[0]
-print("SSE: ",SSE)
-print("SST: ",SST)
-print("R^2: ",1-SSE/SST)
-
-
-# plt.plot(train['index'],y,'.')
-# plt.plot(train['index'],x.dot(z),'-')
-# plt.title("Seasonally predicted Pageviews over time")
-# plt.show()
-
-# plt.scatter(train['index'],y-x.dot(z))
-# plt.show()
-print("Coefficients:")
-z
-```
-
     SSE:  1824619798.78
     SST:  9765197379.99
     R^2:  0.813150750796
+    
     Coefficients:
-
-
-
-
 
     array([[  1.15000991e+04],
            [ -2.75598163e+03],
@@ -911,38 +550,6 @@ z
 
 
 #### Validation
-
-
-```python
-input_df2=valid[seasonal_list]
-output=valid[['Pageviews']]
-y=output.values
-input_=input_df2.values
-m,n =np.shape(input_)
-x=input_
-
-x=np.ones((m,9))
-x[:,1:]=np.column_stack((valid['W_2'],valid['W_3'],
-                         valid['W_4'],valid['W_5'],valid['W_6'],
-                         valid['W_7'],valid['trend'],valid['sq_index']))
-
-
-
-SSE=np.sum((y-x.dot(z))**2)
-SST=sum((y-np.mean(y))**2)[0]
-print("SSE: ",SSE)
-print("SST: ",SST)
-print("R^2: ",1-SSE/SST)
-
-
-plt.plot(valid['index'],valid[['Pageviews']],'.')
-plt.plot(valid['index'],x.dot(z),'-')
-plt.title("Seasonally predicted Pageviews over time")
-plt.show()
-
-plt.scatter(valid['index'],y-x.dot(z))
-plt.show()
-```
 
     SSE:  1280695316.78
     SST:  2180040128.7
@@ -961,7 +568,3 @@ plt.show()
 Dummy coding is one thing that can be automated, but its not always easy to type every variable to include in a linear model. The advantage of dummy coding is that its more difficult to go wrong with because each level is accounted for. Using signal processing, frequencies need to be chosen for the seasonal components which requires some inspection and maybe some trail and error. The plus side is that you can choose which periods make sense and you can choose frequencies for trend component while you work on the seasonal part.
 All in all, both methods ended up with the same number of parameters and had the same performance.
 
-
-```python
-
-```
