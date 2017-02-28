@@ -1,20 +1,4 @@
 
-<script>
-    var code_show=true; //true -> hide code at first
-
-    function code_toggle() {
-        $('div.prompt').hide(); // always hide prompt
-
-        if (code_show){
-            $('div.input').hide();
-        } else {
-            $('div.input').show();
-        }
-        code_show = !code_show
-    }
-    $( document ).ready(code_toggle);
-</script>
-
 # How signal processing can be used to identify patterns in complex time series
 #### by Rohan Kotwani
 
@@ -40,55 +24,7 @@ For the purposes of this post, we will only focus on the T(t) and S(t) component
 600 observations were used in the training set. The result was tested on the full dataset with 731 observations.
 
 
-```python
-import pandas as pd
-import numpy as np
-import datetime
-import matplotlib.pyplot as plt
-import datetime
-
-full=pd.read_csv("DATA/DSC_Time_Series_Challenge.csv",dtype = {'Day ':str,'Sessions':int,'Pageviews':int})
-time=[datetime.datetime.strptime(t[0],"%m/%d/%y") for t in full[['Day ']].values]
-weekday=[datetime.datetime.strptime(t[0],"%m/%d/%y").isocalendar()[2] for t in full[['Day ']].values]
-month=[datetime.datetime.strptime(t[0],"%m/%d/%y").month for t in full[['Day ']].values]
-day=[datetime.datetime.strptime(t[0],"%m/%d/%y").day for t in full[['Day ']].values]
-
-full['time']=time
-full['index']=np.arange(1,len(full)+1)
-full['day']=day
-full['sq_index']=np.power((np.arange(1,len(full)+1)),2)
-full['weekday']=weekday
-full['month']=month
-full['seq1']=full['index'].apply(lambda x: x%23)
-# seq = [1, 2, 3])
-# df['seq1'] = [next(seq) for count in range(df.shape[0])]
-# seq = cycle([1, 2, 3])
-# df['seq1'] = [next(seq) for count in range(full.shape[0])]
-
-time_component='index'
-seasonal_list=['weekday']
-
-for seasonal_component in seasonal_list:
-    minsec=min(full[seasonal_component])
-    maxsec=max(full[seasonal_component])
-    full[seasonal_component]=full[seasonal_component].apply(lambda x: (x - minsec)+1)
-
-full=full.sort_values(by=[time_component])
-print(len(full))
-train=full[:600].copy()
-
-plt.plot(train['index'],train['Pageviews'],'-')
-plt.xlabel('time')
-plt.ylabel('Pageviews')
-plt.show()
-train.head()
-```
-
-    731
-
-
-
-![png](output_2_1.png)
+![png](Images/output_2_1.png)
 
 
 
