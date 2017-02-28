@@ -153,7 +153,7 @@ print(np.absolute(filter_trend(F_unfiltered, 0.2,0.3,500)))
 ```
 
 
-![png](output_5_0.png)
+![png](Images/output_5_0.png)
 
 
     Frequency, Magnitude
@@ -203,11 +203,11 @@ plt.show()
 ```
 
 
-![png](output_7_0.png)
+![png](Images/output_7_0.png)
 
 
 
-![png](output_7_1.png)
+![png](Images/output_7_1.png)
 
 
 This trend component would be entered into the regression model as an independent variable.
@@ -258,7 +258,7 @@ print(np.absolute(filter_trend(F_unfiltered, 0.2,0.3,threshold)))
 ```
 
 
-![png](output_11_0.png)
+![png](Images/output_11_0.png)
 
 
     Frequency, Magnitude
@@ -295,7 +295,7 @@ for seasonal_component in seasonal_list:
 ```
 
 
-![png](output_13_0.png)
+![png](Images/output_13_0.png)
 
 
     [[  1.41666667e-01   2.42782136e+02]
@@ -618,15 +618,15 @@ plt.show()
 ```
 
 
-![png](output_19_0.png)
+![png](Images/output_19_0.png)
 
 
 
-![png](output_19_1.png)
+![png](Images/output_19_1.png)
 
 
 
-![png](output_19_2.png)
+![png](Images/output_19_2.png)
 
 
 Each seasonal component is made up of two sinusoidal waves, i.e. β1*sin(t/T) + β2*cos(t/T). The cosine term is include to account for phase shift. The beta coefficients are the estimated parameter weights for each sinusoid. Since 3 frequencies are included in the model, there will be 6 sinusoids and 6 beta coefficients to estimate. For the time component, t, I used the actual "weekday" variable.
@@ -665,7 +665,7 @@ plt.show()
 ```
 
 
-![png](output_21_0.png)
+![png](Images/output_21_0.png)
 
 
     600 6
@@ -674,7 +674,7 @@ plt.show()
 
 
 
-![png](output_21_2.png)
+![png](Images/output_21_2.png)
 
 
 There are two peaks at indexes 2 and 6 which correspond to Monday and Thursday. This is consistent with the problem solution given above.
@@ -745,7 +745,7 @@ z
 
 
 
-![png](output_24_1.png)
+![png](Images/output_24_1.png)
 
 
     Coefficients:
@@ -784,7 +784,7 @@ plt.show()
 ```
 
 
-![png](output_26_0.png)
+![png](Images/output_26_0.png)
 
 
 The residual plot is not indicative of a major seasonal pattern. There is a slight hump at the begining that levels off and increases slightly toward the end.
@@ -833,7 +833,7 @@ plt.show()
 
 
 
-![png](output_29_1.png)
+![png](Images/output_29_1.png)
 
 
 
@@ -843,7 +843,7 @@ plt.show()
 ```
 
 
-![png](output_30_0.png)
+![png](Images/output_30_0.png)
 
 
 There is a slightly overall trend in the residual plot. Including lower frequency components could help stablize errors.
@@ -950,11 +950,11 @@ plt.show()
 
 
 
-![png](output_35_1.png)
+![png](Images/output_35_1.png)
 
 
 
-![png](output_35_2.png)
+![png](Images/output_35_2.png)
 
 
 #### The results are almost (if not) exactly the same, so which method to choose?
