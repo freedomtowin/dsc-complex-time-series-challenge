@@ -166,7 +166,7 @@ This trend component would be entered into the regression model as an independen
 #### Finding seasonal patterns in the target variable:
 
 
-![png](output_9_0.png)
+![png](Images/output_9_0.png)
 
 
 The overall trend could be removed by creating a differenced variable for Pageviews The differenced variable allows for seasonal components to be identified more clearly.
