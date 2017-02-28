@@ -489,9 +489,7 @@ The model was fitted on the training set with 600 observations. Its interesting 
 
 
     Coefficients:
-
-
-
+    
     array([[  8.10030680e+03],
            [  1.55909280e+03],
            [  2.23320858e+03],
