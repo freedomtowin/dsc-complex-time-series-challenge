@@ -14,10 +14,10 @@ The trend and seasonality can be accounted for in a linear model by including si
 #### Defining the model:
 y = P(t) + S(t) + T(t) + R(t)
 
-P(t)~Polynomial component
-S(t)~Seasonal component
-T(t)~Trend component
-R(t)~Residual error
+* P(t)~Polynomial component
+* S(t)~Seasonal component
+* T(t)~Trend component
+* R(t)~Residual error
 
 For the purposes of this post, we will only focus on the T(t) and S(t) components. The actual model fitting will be done in a separate post. 600 observations were used in the training set. The result was tested on the full dataset with 731 observations.
 
