@@ -118,19 +118,6 @@ For the purposes of this post, we will only focus on the T(t) and S(t) component
 </div>
 
 
-
-
-```python
-def filter_trend(unfiltered,band,f_signal,threshold):
-    filtered=[]
-    for x,f in unfiltered:
-        if np.absolute(f)>f_signal+band or np.absolute(f)<f_signal-band or (2.0/N *np.abs(x))<=threshold:
-            pass
-        else:
-            filtered.append((f,x))
-    return np.array(filtered)
-```
-
 #### Find the overall trend:
 I used an FFT transformation to visualize the magnitude of the frequency components in the time series. To be specific, the absolute magnitude is plotted.
 
