@@ -548,6 +548,7 @@ There is a slightly overall trend in the residual plot. Including lower frequenc
 
 
 #### The results are almost (if not) exactly the same, so which method to choose?
-Dummy coding is one thing that can be automated, but its not always easy to type every variable to include in a linear model. The advantage of dummy coding is that its more difficult to go wrong with because each level is accounted for. Using signal processing, frequencies need to be chosen for the seasonal components which requires some inspection and maybe some trail and error. The plus side is that you can choose which periods make sense and you can choose frequencies for trend component while you work on the seasonal part.
+Dummy coding can be automated and advantage of dummy coding is that its more difficult to go wrong by including every level of the variable. With the signal processing approach, the frequencies need to be chosen for the seasonal components which requires some inspection and maybe some trial and error. The plus side is that you can choose which periods make sense and you can choose frequencies for trend component while you work on the seasonal part.
+
 All in all, both methods ended up with the same number of parameters and had the same performance.
 
