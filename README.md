@@ -19,13 +19,7 @@ y = P(t) + S(t) + T(t) + R(t)
 * T(t)~Trend component
 * R(t)~Residual error
 
-For the purposes of this post, we will only focus on the T(t) and S(t) components. 
-
-X_{2\pi }(\omega )=\sum _{n=-\infty }^{\infty }x[n]\,e^{-i\omega n}.
-
-
-
-The actual model fitting will be done in a separate post. 600 observations were used in the training set. The result was tested on the full dataset with 731 observations.
+For the purposes of this post, we will only focus on the T(t) and S(t) components. The actual model fitting will be done in a separate post. 600 observations were used in the training set. The result was tested on the full dataset with 731 observations.
 
 
 ![png](Images/output_2_1.png)
