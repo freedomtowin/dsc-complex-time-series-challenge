@@ -19,7 +19,9 @@ The trend and seasonality can be accounted for in a linear model by including si
 
 1. This kernel function transforms a sequence of N numbers into the frequency domain
 2. k ∈ [0,N-1] or k ∈ [−N/2, N/2−1] or k ∈ [−(N−1)/2, (N−1)/2]
-2. N = # of data points, n = rank order of input data points, k = rank order of output data points
+3. N = # of data points
+4. n = rank order of input data points
+5. k = rank order of output data points
 
 
 #### Defining the model:
