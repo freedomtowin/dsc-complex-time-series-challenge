@@ -15,6 +15,7 @@ The trend and seasonality can be accounted for in a linear model by including si
 
 * N point discrete Fourier transform formula
 
+![png](Images/n_point_discrete_fourier_transform.tiff)
 
 1. This kernel function transforms a sequence of N numbers
 2. k ∈ [0,N-1] 
