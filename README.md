@@ -11,6 +11,17 @@ I saw a DSC article that talked about finding trends using signal processing tec
 
 The trend and seasonality can be accounted for in a linear model by including sinusoidal components with a given frequency. However, finding the appropriate frequency for each sinusoidal component requires a little more digging. This post shows how to use Discrete Fourier transforms to find these frequencies.
 
+#### The basic idea:
+
+* N point discrete Fourier transform formula
+
+![png](Images/n_point_discrete_fourier_transform.tiff)
+
+1. This kernel function transforms a sequence of N numbers
+2. k ∈ [0,N-1] 
+2. k/N = complex frequency
+
+
 #### Defining the model:
 y = P(t) + S(t) + T(t) + R(t)
 
@@ -23,6 +34,7 @@ For the purposes of this post, we will only focus on the T(t) and S(t) component
 
 
 ![png](Images/output_2_1.png)
+
 
 
 
