@@ -23,6 +23,10 @@ The trend and seasonality can be accounted for in a linear model by including si
 4. k = rank order of output data points
 
 
+#### Assumptions
+
+"One of the assumptions of the Fourier transform is that the sample of the signal over which the Fourier transform is calculated is large to be representative. To be representative the sample should capture at least one period of all the components that make up the signal. The Fourier transform assumes that the signal is stationary and that the signals in the sample continue into infinity. The Fourier transform performs poorly when this is not the case."
+
 #### Defining the model:
 y = P(t) + S(t) + T(t) + R(t)
 
@@ -130,8 +134,17 @@ For the purposes of this post, we will only focus on the T(t) and S(t) component
 
 
 #### Find the overall trend:
-I used an FFT transformation to visualize the magnitude of the frequency components in the time series. To be specific, the absolute magnitude is plotted.
+The FFT transformation has a complex magnitude representation for each frequency component. To extract the trend component out, the data is filtered to include small frequencies, or signals with large periods. The complex magnitude can be used to find the phase and absolute magnitude of the sinusodial wave corresponding to each frequency. The FFT transformation can be visualized by plotting the absolute magnitude of each frequency component. 
 
+
+
+The trend component is calculated by: 
+    
+    sinusoid_i = {magnitude * np.cos(2*np.pi*t*f+phase)}i 
+    SUM[ sinusoid_i ]
+
+The sinusoid waves for each freqeuncy component in the filtered frequency domain are added together.  
+  
 
 
 ![png](Images/output_5_0.png)
@@ -157,7 +170,8 @@ I found dominant frequencies at .143, .285, and .428. These correspond to T=7.14
 
 
 ![png](Images/output_7_1.png)
-
+    
+  
 
 This trend component would be entered into the regression model as an independent variable.
 
