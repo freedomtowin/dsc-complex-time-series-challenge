@@ -27,6 +27,14 @@ The trend and seasonality can be accounted for in a linear model by including si
 
 "One of the assumptions of the Fourier transform is that the sample of the signal over which the Fourier transform is calculated is large to be representative. To be representative the sample should capture at least one period of all the components that make up the signal. The Fourier transform assumes that the signal is stationary and that the signals in the sample continue into infinity. The Fourier transform performs poorly when this is not the case."
 
+Since the signal is periodic, the time shifted signal doesn't change the absolute magnitude of the frequency domain.
+
+$$ X \left[ k \right] = \sum_{k = 0}^{N - 1} x \left[ n \right] {e}^{\frac{2 \pi i n k}{N}} $$
+
+$$ {e}^{\frac{-2 \pi i D k}{N}}X \left[ k \right] = \sum_{k = 0}^{N - 1} x \left[ n - D \right] {e}^{\frac{2 \pi i n k}{N}}{e}^{\frac{-2 \pi i D k}{N}} $$
+
+By the way, there is nothing stopping you from taking the FFT of a non-periodic signal, but there it little practical use if none of the transformations work.
+
 #### Defining the model:
 y = P(t) + S(t) + T(t) + R(t)
 
