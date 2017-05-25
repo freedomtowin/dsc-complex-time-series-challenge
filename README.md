@@ -30,13 +30,6 @@ The trend and seasonality can be accounted for in a linear model by including si
 A stationary process has a constant mean and variance over time which is a property that the time series doesn't have. A stationary process can be extracted from the time series by creating a time differenced variable. However, the magnitudes of this variable do not represent the actual signal. A regression model can then be used to recontruct the magnitudes of this signal.
 
 
-
-Since the signal is periodic, the time shifted signal doesn't change the absolute magnitude of the frequency domain.
-
-![png](Images/DFT_periodic_proof.tiff)
-
-By the way, there is nothing stopping you from taking the FFT of a non-periodic signal, but there it little practical use if none of the transformations work.
-
 #### Defining the model:
 y = P(t) + S(t) + T(t) + R(t)
 
