@@ -14,7 +14,8 @@ The trend and seasonality can be accounted for in a linear model by including si
 
 * N point discrete Fourier transform formula
 
-<img src='Images/n_point_DFT.png'>
+![png](Images/n_point_DFT.png)
+
 
 1. k ∈ [0,N-1] or k ∈ [−N/2, N/2−1] or k ∈ [−(N−1)/2, (N−1)/2]
 2. N = # of data points
