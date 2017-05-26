@@ -1,48 +1,72 @@
 
-# How signal processing can be used to identify patterns in complex time series
+# How to reconstruct the seasonal patterns from a time-differenced, non-stationary time-series using machine learning
 #### by Rohan Kotwani
 
-This was a fun, machine learning side project so I didn't have any business context to do it.
+The original problem statement was given here: http://www.datasciencecentral.com/forum/topics/challenge-of-the-week-identifying-patterns-in-complex-time-series
 
-#### The original problem statement was given here: http://www.datasciencecentral.com/forum/topics/challenge-of-the-week-identifying-patterns-in-complex-time-series
 There was also a verbal solution given in the members only section. I'm not sure if its legal to share the whole thing, but here is an excerpt of the solution. " The time series has a weekly periodicity with two peaks: Monday and Thursday, corresponding respectively to the publication of the Monday and Thursday digests. The impact of the Monday and Thursday email blasts extent over the next day; this makes measuring the yield more difficult, unless you use additional data, e.g. from our newsletter vendor. However, the bulk of the impact is really on Monday and Thursday."
 
 I saw a DSC article that talked about finding trends using signal processing techniques. http://www.datasciencecentral.com/profiles/blogs/how-we-combined-different-methods-to-create-advanced-time-series . The trend component could be created and entered into the regression model as an independent variable. I should the trend component in one of the figures above. I think it wouldn't make sense to reuse frequencies components from the trend component because their periods (cycles/seconds) are very large (upwards of 200 days).
 
 The trend and seasonality can be accounted for in a linear model by including sinusoidal components with a given frequency. However, finding the appropriate frequency for each sinusoidal component requires a little more digging. This post shows how to use Discrete Fourier transforms to find these frequencies.
 
-#### The basic idea:
+#### The basic idea
 
 * N point discrete Fourier transform formula
 
 ![png](Images/n_point_DFT.tiff)
+
 
 1. k ∈ [0,N-1] or k ∈ [−N/2, N/2−1] or k ∈ [−(N−1)/2, (N−1)/2]
 2. N = # of data points
 3. n = rank order of input data points
 4. k = rank order of output data points
 
-
 #### Assumptions
 
 "The Fourier transform assumes that the signal is stationary and that the signals in the sample continue into infinity. The Fourier transform performs poorly when this is not the case."
 
-A stationary process has a constant mean and variance over time which is a property that the time series doesn't have. A stationary process can be extracted from the time series by creating a time differenced variable. However, the magnitudes of this variable do not represent the actual signal. A regression model can then be used to recontruct the magnitudes of this signal.
-
+A stationary process has a constant mean and variance over time which is a property that the time series doesn't have. A stationary process can be extracted from the time series by creating a time differenced variable. However, the complex magnitudes from the time difference variable does not represent the actual signal. A regression model can then be used to recontruct the magnitudes of this signal.
 
 #### Defining the model:
-y = P(t) + S(t) + T(t) + R(t)
+y = T(t) + S(t) + R(t)
 
-* P(t)~Polynomial component
-* S(t)~Seasonal component
 * T(t)~Trend component
+* S(t)~Seasonal component
 * R(t)~Residual error
 
-For the purposes of this post, we will only focus on the T(t) and S(t) components. The actual model fitting will be done in a separate post. 600 observations were used in the training set. The result was tested on the full dataset with 731 observations.
+For the purposes of this post, we will only focus on the T(t) and S(t) components. 80% of the data or 584 observations were used to create the training set. The model was validated on the remaining 146 observations.
 
 
-![png](Images/output_2_1.png)
+```python
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+import datetime
 
+full=pd.read_csv("Images/DSC_Time_Series_Challenge.csv",dtype = {'Day ':str,'Sessions':int,'Pageviews':int})
+time=[datetime.datetime.strptime(t[0],"%m/%d/%y") for t in full[['Day ']].values]
+weekday=[datetime.datetime.strptime(t[0],"%m/%d/%y").isocalendar()[2] for t in full[['Day ']].values]
+
+full['time']=time
+full['index']=np.arange(1,len(full)+1)
+full['weekday']=weekday
+full=full.sort_values(by=['time'])
+
+train=full[:584].copy()
+valid=full[584:].copy()
+train.head(n=5)
+
+plt.plot(full['index'],full['Pageviews'],'-')
+plt.xlabel('time')
+plt.ylabel('Pageviews')
+plt.show()
+
+full.head()
+```
+
+
+![png](Images/output_1_0.png)
 
 
 
@@ -58,11 +82,7 @@ For the purposes of this post, we will only focus on the T(t) and S(t) component
       <th>Pageviews</th>
       <th>time</th>
       <th>index</th>
-      <th>day</th>
-      <th>sq_index</th>
       <th>weekday</th>
-      <th>month</th>
-      <th>seq1</th>
     </tr>
   </thead>
   <tbody>
@@ -73,11 +93,7 @@ For the purposes of this post, we will only focus on the T(t) and S(t) component
       <td>7177</td>
       <td>2013-09-25</td>
       <td>1</td>
-      <td>25</td>
-      <td>1</td>
       <td>3</td>
-      <td>9</td>
-      <td>1</td>
     </tr>
     <tr>
       <th>1</th>
@@ -86,11 +102,7 @@ For the purposes of this post, we will only focus on the T(t) and S(t) component
       <td>10760</td>
       <td>2013-09-26</td>
       <td>2</td>
-      <td>26</td>
       <td>4</td>
-      <td>4</td>
-      <td>9</td>
-      <td>2</td>
     </tr>
     <tr>
       <th>2</th>
@@ -99,11 +111,7 @@ For the purposes of this post, we will only focus on the T(t) and S(t) component
       <td>8171</td>
       <td>2013-09-27</td>
       <td>3</td>
-      <td>27</td>
-      <td>9</td>
       <td>5</td>
-      <td>9</td>
-      <td>3</td>
     </tr>
     <tr>
       <th>3</th>
@@ -112,11 +120,7 @@ For the purposes of this post, we will only focus on the T(t) and S(t) component
       <td>4093</td>
       <td>2013-09-28</td>
       <td>4</td>
-      <td>28</td>
-      <td>16</td>
       <td>6</td>
-      <td>9</td>
-      <td>4</td>
     </tr>
     <tr>
       <th>4</th>
@@ -125,100 +129,188 @@ For the purposes of this post, we will only focus on the T(t) and S(t) component
       <td>4881</td>
       <td>2013-09-29</td>
       <td>5</td>
-      <td>29</td>
-      <td>25</td>
       <td>7</td>
-      <td>9</td>
-      <td>5</td>
     </tr>
   </tbody>
 </table>
 </div>
 
 
-#### Find the overall trend:
-The FFT transformation has a complex magnitude representation for each frequency component. To extract the trend component out, the data is filtered to include small frequencies, or signals with large periods. The complex magnitude can be used to find the phase and absolute magnitude of the sinusodial wave corresponding to each frequency. The FFT transformation can be visualized by plotting the absolute magnitude of each frequency component. 
+
+#### The weekday variable will be dummy coded and used later to compare results
+
+
+```python
+weekday_dummies = pd.get_dummies(train.weekday, prefix='W').iloc[:, 1:]
+train = pd.concat([train, weekday_dummies], axis=1)
+weekday_dummies = pd.get_dummies(valid.weekday, prefix='W').iloc[:, 1:]
+valid = pd.concat([valid, weekday_dummies], axis=1)
+```
+
+#### Custom Libaries
+
+
+```python
+import Regression
+import DSP
+```
+
+#### Finding the overall trend:
+
+A polynomial term can be used to represent the trend component T(t) which can be created from the index variable. The complexity of the trend component can be tuned by using a training and validation set to find optimal complexity with the lowest sum of squared errors. A complexity of degree 2 had the lowest SSE value on the validation set so these terms will be included in the model.
+
+
+```python
+heap = []
+for i in range(1,15):
+    z=Regression.sklearn_poly_regression(train[['index']],train[['Pageviews']],i)
+    SSE = Regression.numpy_poly_regression_SSE(valid[['index']],valid[['Pageviews']],i,z)
+    heap.append((SSE,i))
+Regression.heapsort(heap)
+```
 
 
 
-The trend component is calculated by: 
-    
-    sinusoid_i = {magnitude * np.cos(2*np.pi*t*f+phase)}i 
-    SUM[ sinusoid_i ]
 
-The sinusoid waves for each freqeuncy component in the filtered frequency domain are added together.  
-  
+    [(2439879011.916925, 2),
+     (3174625477.7490239, 11),
+     (3199921635.4631476, 14),
+     (3228657253.80269, 12),
+     (3243036097.6879435, 10),
+     (3247262823.0314054, 13),
+     (3439863169.0826645, 9),
+     (4276247432.3428478, 1),
+     (4290126891.6970415, 8),
+     (5901317555.359643, 4),
+     (6361004811.9196491, 3),
+     (15168127670.713562, 5),
+     (306887053477.06006, 7),
+     (434993076221.19543, 6)]
 
 
-![png](Images/output_5_0.png)
 
 
+```python
+train['sq_index'] = train['index']**2
+valid['sq_index'] = valid['index']**2
+```
+
+#### Removing the overall trend:
+
+First, the overall trend needs to be removed from the signal in order to statisfy the stationary process assumption. This can be accomplished by creating a lag 1 differenced variable for Pageviews. This differenced variable will also make seasonal components easier to find.
+
+
+```python
+time_diff_signal = DSP.time_diff_variable(train['Pageviews'],1)
+
+plt.plot(train['index'][1:],time_diff_signal,'-')
+plt.xlabel('time')
+plt.ylabel('Pageviews[t] - Pageviews[t-1]')
+plt.show()
+```
+
+
+![png](Images/output_10_0.png)
+
+
+#### The FFT transformation:
+
+Taking the FFT of the time differenced signal creates a complex magnitude representation for each sinusoidal frequency component in the signal. 
+
+The data is filtered to include only the dominant sinusodial frequency components. Usually, the complex magnitude can be used to find the phase and absolute magnitude of the sinusodial wave corresponding to each frequency. In this case, we are using a time difference variable so the magnitudes and phases are not representative of the actual variable.
+
+This process can be semi-automated by using statistics. The center frequency can be found by average across all frequencies. The bandwidth of the filter can be defined by frequencies within to standard deviations of the mean of the absolute complex magnitude. The purpose of this is avoid periods that are too large.
+
+
+```python
+N = len(time_diff_signal)
+unfiltered  = DSP.get_frequency_domain(time_diff_signal)
+y_abs=( 2.0/N * np.abs(unfiltered[1:,1]))
+threshold = np.mean(y_abs)+2*np.std(y_abs)
+print("Absolute magnitude threshold: ", threshold)
+
+plt.plot(unfiltered[1:,0],y_abs)
+plt.title("pageviews: frequency domain")
+plt.show()
+
+
+center = np.mean(unfiltered[1:,0])
+band = 1*np.std(unfiltered[1:,0])
+print("Center frequency: ",np.abs(center),"Band: ",np.absolute(band))
+
+
+print("Frequency, Magnitude")
+abs_filtered = np.absolute(DSP.filter_freq_domain(unfiltered, center,band,1000))
+print(abs_filtered)
+```
+
+    Absolute magnitude threshold:  640.530604846
+
+
+    /Users/rohankotwani/anaconda/envs/datasci/lib/python3.5/site-packages/numpy/core/numeric.py:531: ComplexWarning: Casting complex values to real discards the imaginary part
+      return array(a, dtype, copy=False, order=order)
+
+
+
+![png](Images/output_12_2.png)
+
+
+    Center frequency:  0.249571183533 Band:  0.143593981673
     Frequency, Magnitude
-    [[  1.41666667e-01   1.82239797e+05]
-     [  1.43333333e-01   5.67160341e+05]
-     [  2.83333333e-01   1.66899918e+05]
-     [  2.85000000e-01   4.59942544e+05]
-     [  2.86666667e-01   3.95441559e+05]
-     [  4.28333333e-01   2.03492985e+05]]
+    [[  1.42367067e-01   3.95717180e+05]
+     [  2.84734134e-01   5.06308893e+05]
+     [  2.86449400e-01   7.76821349e+05]]
 
 
-#### Does it make sense to reuse frequencies for the trend and seasonal components?
-On one hand, it might be better not to miss anything. I doubt there will be a prominant trend for -a weekday- every 28 weeks.
-For the trend component, it would makes sense to use the lowest frequencies with the highest magnitudes.
+#### Creating predictor variables
 
-I found dominant frequencies at .143, .285, and .428. These correspond to T=7.14,3.5, and 2.33. The reason why those frequencies are interesting is because they are "sticking out." Which is shows there is probably a seasonal component that has a reasonable period, T (cycles/second). There were also some frequencies around the e-3 orders of magnitude. These were at .00166, .00333, and 0.005, T>200, which were included in the trend.
+After filtering the data, the dominant frequencies were found at .143, .28, and .29. These correspond to T=7,4, and 3, respectively. Sequences with these periods can be created. 
 
-![png](Images/output_7_0.png)
+Notice that the frequency .428, that corresponds to a period of 2 (actually a little below), was not included in our predictors. This is because of Nyquist's thoeorm:
 
-
-
-![png](Images/output_7_1.png)
-    
-  
-
-This trend component would be entered into the regression model as an independent variable.
-
-#### Finding seasonal patterns in the target variable:
+* "When the signal bandlimited to ½ fs cycles/second (hertz), its Fourier transform, X(f), is 0 for all |f| > 1/2*(1/T)"
 
 
-![png](Images/output_9_0.png)
+In this case the signal has a sampling period of 1 or a sampling frequency of 1. The maximum frequency we can "see," by Nyquist's theorm, would be a signal with a period greater than 2. 
 
 
-The overall trend could be removed by creating a differenced variable for Pageviews The differenced variable allows for seasonal components to be identified more clearly.
 
-![png](Images/output_11_0.png)
+```python
+period_list = set([round(1/(ft)) for ft,ht in abs_filtered if int(1/(ft))>2])
+print("Sequence list: ",period_list)
 
+train = DSP.get_sequences(train,period_list,plot=True)
+valid = DSP.get_sequences(valid,period_list,plot=False)
+```
 
-    Frequency, Magnitude
-    [[  1.43333333e-01   5.00831933e+05]
-     [  2.83333333e-01   2.65832489e+05]
-     [  2.85000000e-01   7.24904464e+05]
-     [  2.86666667e-01   6.13035227e+05]
-     [  2.88333333e-01   1.92922452e+05]
-     [  4.28333333e-01   4.04206565e+05]]
+    Sequence list:  {3.0, 4.0, 7.0}
 
 
-The lower frequency components were removed and the other, distinct frequencies were amplified. This makes the frequencies easier to filter! Also it makes it easier to compare to possible seasonal variables.
-
-#### Finding the seasonal predictor variable:
-
-![png](Images/output_13_0.png)
+    /Users/rohankotwani/anaconda/envs/datasci/lib/python3.5/site-packages/numpy/core/numeric.py:531: ComplexWarning: Casting complex values to real discards the imaginary part
+      return array(a, dtype, copy=False, order=order)
 
 
-    [[  1.41666667e-01   2.42782136e+02]
-     [  1.43333333e-01   6.00386477e+02]
-     [  1.45000000e-01   1.31981640e+02]
-     [  2.85000000e-01   2.78344410e+02]
-     [  2.86666667e-01   2.07887576e+02]
-     [  4.28333333e-01   2.97539156e+02]]
+
+![png](Images/output_14_2.png)
 
 
-#### Eureka! Weekday shares the same frequency components as Pageviews!
-I found dominant frequencies at .143, .285, and .428. These correspond to T=7.14,3.5, and 2.33. There were also some frequencies around the e-3 orders of magnitude. These were at .00166, .00333, and 0.005 and had periods upwards of 200. 
-If you want to see how I included these frequency components in a regression model please see my Github. The results are compared to straight up dummy coding (the results are the same).  
+
+![png](Images/output_14_3.png)
 
 
-This table shows the index, weekday, and other time variables that will help me illustrate what I mean by periods or cycles.  My index starts at 1, but this corresponds to weekday 3 (or Wednesday). So index 6 corresponds to Monday and index 2 corresponds to Thursday. 
+
+![png](Images/output_14_4.png)
+
+
+#### Eureka! Weekday (Sequence period = 7) shares the same frequency components as Pageviews!
+
+The table below shows the index and weekday to help illustrate what the periods or cycles.  The index starts at 1, but this corresponds to weekday 3 (or Wednesday). So index 6 corresponds to Monday and index 2 corresponds to Thursday.
+
+
+```python
+train.head()
+```
+
 
 
 
@@ -232,18 +324,17 @@ This table shows the index, weekday, and other time variables that will help me 
       <th>Pageviews</th>
       <th>time</th>
       <th>index</th>
-      <th>day</th>
-      <th>sq_index</th>
       <th>weekday</th>
-      <th>month</th>
-      <th>seq1</th>
-      <th>trend</th>
       <th>W_2</th>
       <th>W_3</th>
       <th>W_4</th>
       <th>W_5</th>
       <th>W_6</th>
       <th>W_7</th>
+      <th>sq_index</th>
+      <th>seq_3.0</th>
+      <th>seq_4.0</th>
+      <th>seq_7.0</th>
     </tr>
   </thead>
   <tbody>
@@ -254,18 +345,17 @@ This table shows the index, weekday, and other time variables that will help me 
       <td>7177</td>
       <td>2013-09-25</td>
       <td>1</td>
-      <td>25</td>
-      <td>1</td>
       <td>3</td>
-      <td>9</td>
-      <td>1</td>
-      <td>304.221820</td>
       <td>0.0</td>
       <td>1.0</td>
       <td>0.0</td>
       <td>0.0</td>
       <td>0.0</td>
       <td>0.0</td>
+      <td>1</td>
+      <td>1.0</td>
+      <td>1.0</td>
+      <td>1.0</td>
     </tr>
     <tr>
       <th>1</th>
@@ -274,18 +364,17 @@ This table shows the index, weekday, and other time variables that will help me 
       <td>10760</td>
       <td>2013-09-26</td>
       <td>2</td>
-      <td>26</td>
       <td>4</td>
-      <td>4</td>
-      <td>9</td>
-      <td>2</td>
-      <td>257.168205</td>
       <td>0.0</td>
       <td>0.0</td>
       <td>1.0</td>
       <td>0.0</td>
       <td>0.0</td>
       <td>0.0</td>
+      <td>4</td>
+      <td>2.0</td>
+      <td>2.0</td>
+      <td>2.0</td>
     </tr>
     <tr>
       <th>2</th>
@@ -294,18 +383,17 @@ This table shows the index, weekday, and other time variables that will help me 
       <td>8171</td>
       <td>2013-09-27</td>
       <td>3</td>
-      <td>27</td>
-      <td>9</td>
       <td>5</td>
-      <td>9</td>
-      <td>3</td>
-      <td>209.818345</td>
       <td>0.0</td>
       <td>0.0</td>
       <td>0.0</td>
       <td>1.0</td>
       <td>0.0</td>
       <td>0.0</td>
+      <td>9</td>
+      <td>0.0</td>
+      <td>3.0</td>
+      <td>3.0</td>
     </tr>
     <tr>
       <th>3</th>
@@ -314,18 +402,17 @@ This table shows the index, weekday, and other time variables that will help me 
       <td>4093</td>
       <td>2013-09-28</td>
       <td>4</td>
-      <td>28</td>
-      <td>16</td>
       <td>6</td>
-      <td>9</td>
-      <td>4</td>
-      <td>162.235984</td>
       <td>0.0</td>
       <td>0.0</td>
       <td>0.0</td>
       <td>0.0</td>
       <td>1.0</td>
       <td>0.0</td>
+      <td>16</td>
+      <td>1.0</td>
+      <td>0.0</td>
+      <td>4.0</td>
     </tr>
     <tr>
       <th>4</th>
@@ -334,118 +421,17 @@ This table shows the index, weekday, and other time variables that will help me 
       <td>4881</td>
       <td>2013-09-29</td>
       <td>5</td>
-      <td>29</td>
+      <td>7</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>1.0</td>
       <td>25</td>
-      <td>7</td>
-      <td>9</td>
-      <td>5</td>
-      <td>114.485143</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
+      <td>2.0</td>
       <td>1.0</td>
-    </tr>
-    <tr>
-      <th>5</th>
-      <td>9/30/13</td>
-      <td>5465</td>
-      <td>10255</td>
-      <td>2013-09-30</td>
-      <td>6</td>
-      <td>30</td>
-      <td>36</td>
-      <td>1</td>
-      <td>9</td>
-      <td>6</td>
-      <td>66.630022</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-    </tr>
-    <tr>
-      <th>6</th>
-      <td>10/1/13</td>
-      <td>3795</td>
-      <td>6757</td>
-      <td>2013-10-01</td>
-      <td>7</td>
-      <td>1</td>
-      <td>49</td>
-      <td>2</td>
-      <td>10</td>
-      <td>7</td>
-      <td>18.734907</td>
-      <td>1.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-    </tr>
-    <tr>
-      <th>7</th>
-      <td>10/2/13</td>
-      <td>3504</td>
-      <td>6138</td>
-      <td>2013-10-02</td>
-      <td>8</td>
-      <td>2</td>
-      <td>64</td>
-      <td>3</td>
-      <td>10</td>
-      <td>8</td>
-      <td>-29.135918</td>
-      <td>0.0</td>
-      <td>1.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-    </tr>
-    <tr>
-      <th>8</th>
-      <td>10/3/13</td>
-      <td>3997</td>
-      <td>7546</td>
-      <td>2013-10-03</td>
-      <td>9</td>
-      <td>3</td>
-      <td>81</td>
-      <td>4</td>
-      <td>10</td>
-      <td>9</td>
-      <td>-76.918270</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>1.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-    </tr>
-    <tr>
-      <th>9</th>
-      <td>10/4/13</td>
-      <td>4474</td>
-      <td>8523</td>
-      <td>2013-10-04</td>
-      <td>10</td>
-      <td>4</td>
-      <td>100</td>
-      <td>5</td>
-      <td>10</td>
-      <td>10</td>
-      <td>-124.548159</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>1.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
+      <td>5.0</td>
     </tr>
   </tbody>
 </table>
@@ -455,130 +441,381 @@ This table shows the index, weekday, and other time variables that will help me 
 
 #### Fitting the Model
 
-I will include a P(t) component as the squared value of the index, sq_index, the trend component as T(t), and the seasonal components as S(t). Since T(t) and P(t) are already created, this part of the blog will focus on S(t).
+Since T(t) is already created, this part of the blog will focus on S(t). 
+
+Each seasonal component is made up of two sinusoidal waves, i.e. β1sin(t/T) + β2cos(t/T). The cosine term is include to account for phase shift. The beta coefficients are the estimated parameter weights for each sinusoid. 
+
+There are 3 sequences included in the model each with a unique t, time index. A period, T, or periods can be used for each sequence. These periods can be found using the same semi-automated techniques used to generate the sequences as described earlier. The threshold can be adjust by the number of standard deviations from the mean of the absolute complex magnitude.
 
 
-![png](Images/output_19_0.png)
+```python
+output=train[['Pageviews']]
+y=output.values
+
+m,n =np.shape(output)
+count=0
+
+train_x = np.ones((len(train),1))
+valid_x = np.ones((len(valid),1))
+
+for component in period_list:
+    var_name = "seq_"+str(component)
+    f=DSP.get_sequence_freq(var=train[[var_name]],std_thresh=2,plot=True)
+    x=DSP.get_seasonal_predictors(train[[var_name]],f)
+    train_x=np.column_stack((train_x,x))
+    x=DSP.get_seasonal_predictors(valid[[var_name]],f)
+    valid_x=np.column_stack((valid_x,x))
+    count+=1
+plt.plot(train['index'][:60],train['Pageviews'][:60],'-')
+plt.title("Values")
+plt.show()
+
+x=train_x
+
+A=x.T.dot(x)
+b=x.T.dot(y)
+z = np.linalg.solve(A,b)
+
+SSE=np.sum((y-x.dot(z))**2)
+print("SSE :",SSE)
+print("Baseline: ",sum((y-np.mean(y))**2)[0])
+
+# plt.plot(train['index'],y,'.') 
+plt.plot(train['index'][:60],x.dot(z)[:60],'-')
+plt.title("Weighted Addition of Seasonal Components")
+plt.show()
+print("coefficients: ")
+print(z)
+```
+
+    threshold 0.147628424524
+    frequencies  [[  0.00000000e+00   5.85000000e+02]
+     [  3.30479452e-01   5.60580464e+01]
+     [  3.32191781e-01   1.39709001e+02]
+     [  3.33904110e-01   2.78551085e+02]
+     [  3.35616438e-01   6.94223955e+01]]
+
+
+    /Users/rohankotwani/anaconda/envs/datasci/lib/python3.5/site-packages/numpy/core/numeric.py:531: ComplexWarning: Casting complex values to real discards the imaginary part
+      return array(a, dtype, copy=False, order=order)
 
 
 
-![png](Images/output_19_1.png)
+![png](Images/output_18_2.png)
+
+
+    frequencies used in  seq_3.0  :  [0.33333333333333331]
+    frequencies used in  seq_3.0  :  [0.33333333333333331]
+    threshold 0.170380040816
+    frequencies  [[  0.00000000e+00   8.76000000e+02]
+     [  2.50000000e-01   4.12950360e+02]]
 
 
 
-![png](Images/output_19_2.png)
+![png](Images/output_18_4.png)
 
 
-Each seasonal component is made up of two sinusoidal waves, i.e. β1*sin(t/T) + β2*cos(t/T). The cosine term is include to account for phase shift. The beta coefficients are the estimated parameter weights for each sinusoid. Since 3 frequencies are included in the model, there will be 6 sinusoids and 6 beta coefficients to estimate. For the time component, t, I used the actual "weekday" variable.
-
-In the regression model, each of these components will get a weight associated with it. When all of them are added up together with their respective weights, you should see a pattern similar to Pageviews.
-
-
-![png](Images/output_21_0.png)
-
-
-    SSE : 6919007526.26
-    Baseline:  9765197379.99
-
-
-
-![png](Images/output_21_2.png)
-
-
-There are two peaks at indexes 2 and 6 which correspond to Monday and Thursday. This is consistent with the problem solution given above.
-
-#### Training Data
-
-The model was fitted on the training set with 600 observations. Its interesting that the model fitted with sinusoids gave almost the same R-squared value as including a dummy coded weekday variable in the model. The coefficients are obviously much different, but the results are eerily similar.
-
-#### Model fitted with sinusoid terms:
-
-
-    SSE:  1824619798.78
-    SST:  9765197379.99
-    R^2:  0.813150750796
+    frequencies used in  seq_4.0  :  [0.25]
+    frequencies used in  seq_4.0  :  [0.25]
+    threshold 0.366388975107
+    frequencies  [[  0.00000000e+00   1.74900000e+03]
+     [  1.40410959e-01   1.45612303e+02]
+     [  1.42123288e-01   4.86725162e+02]
+     [  1.43835616e-01   3.66081334e+02]
+     [  1.45547945e-01   1.33506679e+02]
+     [  2.85958904e-01   3.59556469e+02]
+     [  4.28082192e-01   2.58631250e+02]]
 
 
 
-![png](Images/output_24_1.png)
+![png](Images/output_18_6.png)
 
 
-    Coefficients:
+    frequencies used in  seq_7.0  :  [0.14285714285714285, 0.5, 0.33333333333333331]
+    frequencies used in  seq_7.0  :  [0.14285714285714285, 0.5, 0.33333333333333331]
+
+
+
+![png](Images/output_18_8.png)
+
+
+    SSE : 6016423835.35
+    Baseline:  8816116516.19
+
+
+
+![png](Images/output_18_10.png)
+
+
+    coefficients: 
+    [[  1.06821643e+04]
+     [ -3.52788751e+01]
+     [  4.47084285e+01]
+     [ -5.51584196e+01]
+     [  3.14098637e+00]
+     [  1.34639433e+03]
+     [ -5.91448274e+18]
+     [ -2.32556407e+03]
+     [  1.42799189e+03]
+     [ -1.70555700e+03]
+     [  1.16313398e+03]]
+
+
+#### Weighted Addition of Seasonal Components
+
+In the regression model, each of these components will get a weight associated with it which can be added together to create a weighted seasonal component. The weighted seasonal component has a pattern similar to that of the Pageviews. 
+
+#### Finding peaks
+
+There are two peaks which correspond to Monday and Thursday. This is consistent with the problem solution given above.
+
+
+```python
+peaks=[]
+for i,xz in enumerate(x.dot(z)):
+    if i>0 and i<len(x.dot(z))-1:
+        if x.dot(z)[i]>x.dot(z)[i-1] and x.dot(z)[i]>x.dot(z)[i+1]:
+            peaks.append(train['time'][i].isocalendar()[2])
+print(set(peaks))
+```
+
+    {1, 4}
+
+
+#### Training & Validation
+
+The following models will be trained and validated with different seasonal variables:
+
+1. Model fitted with a dummy coded weekday variable
+2. Model fitted with extracted sinusodial compoenents
+
+
+```python
+y=train[['Pageviews']].values
+
+m =len(train)
+
+x=np.ones((m,8))
+x[:,1:]=np.column_stack((train['W_2'],train['W_3'],
+                         train['W_4'],train['W_5'],train['W_6'],
+                         train['W_7'],train['sq_index']))
+
+
+A=x.T.dot(x)
+b=x.T.dot(y)
+z = np.linalg.solve(A,b)
+
+SSE=np.sum((y-x.dot(z))**2)
+SST=sum((y-np.mean(y))**2)[0]
+print("Training")
+print("SSE: ",SSE)
+print("SST: ",SST)
+print("R^2: ",1-SSE/SST)
+print("Baseline: ",sum((y-np.mean(y))**2)[0])
+
+plt.plot(train['index'],y,'.')
+plt.plot(train['index'],x.dot(z),'-')
+plt.title("Dummy coded weekday variable: Training")
+plt.show()
+
+plt.scatter(train['index'],y-x.dot(z))
+plt.title("Residuals")
+plt.show()
+print("coefficients:")
+print(z)
+print()
+
+y=valid[['Pageviews']].values
+
+m =len(valid)
+
+x=np.ones((m,8))
+x[:,1:]=np.column_stack((valid['W_2'],valid['W_3'],
+                         valid['W_4'],valid['W_5'],valid['W_6'],
+                         valid['W_7'],valid['sq_index']))
+
+
+
+SSE=np.sum((y-x.dot(z))**2)
+SST=sum((y-np.mean(y))**2)[0]
+print("Validation")
+print("SSE: ",SSE)
+print("SST: ",SST)
+print("R^2: ",1-SSE/SST)
+print("Baseline: ",sum((y-np.mean(y))**2)[0])
+
+plt.plot(valid['index'],valid[['Pageviews']],'.')
+plt.plot(valid['index'],x.dot(z),'-')
+plt.title("Dummy coded weekday variable: Validation")
+plt.show()
+
+plt.scatter(valid['index'],y-x.dot(z))
+plt.title("Residuals")
+plt.show()
+```
+
+    Training
+    SSE:  1934277500.84
+    SST:  8816116516.19
+    R^2:  0.780597557066
+    Baseline:  8816116516.19
+
+
+
+![png](Images/output_23_1.png)
+
+
+
+![png](Images/output_23_2.png)
+
+
+    coefficients:
+    [[  1.13631136e+04]
+     [ -2.77063946e+03]
+     [ -3.30666190e+03]
+     [ -1.48011158e+03]
+     [ -3.67236320e+03]
+     [ -6.88455158e+03]
+     [ -5.73850886e+03]
+     [  2.59656996e-02]]
     
-    array([[  8.10030680e+03],
-           [  1.55909280e+03],
-           [  2.23320858e+03],
-           [  1.52632878e+02],
-           [ -1.26500151e+03],
-           [ -3.93921325e+02],
-           [ -7.03090816e+02],
-           [  7.94011068e-01],
-           [  2.50742897e-02]])
+    Validation
+    SSE:  1150498879.42
+    SST:  2421649439.03
+    R^2:  0.524911054063
+    Baseline:  2421649439.03
 
 
 
-![png](Images/output_26_0.png)
-
-
-The residual plot is not indicative of a major seasonal pattern. There is a slight hump at the begining that levels off and increases slightly toward the end.
-
-#### Validation
-
-
-    SSE:  1283531844.75
-    SST:  2180040128.7
-    R^2:  0.41123476222
+![png](Images/output_23_4.png)
 
 
 
-![png](Images/output_29_1.png)
+![png](Images/output_23_5.png)
+
+
+#### Results
+
+The regression model on the training dataset had an R-Squared value of 0.78 with 8 predictor variables. The residual are evenly distributed around zero with a two large outliers. 
+
+The validation dataset had an R-Squared of 0.52. The validation dataset residuals have many outliers compared the the training dataset residuals. In addition, there is a slight downward trend which suggests that a variable might be left out of the model.
+
+
+```python
+y=train[['Pageviews']].values
+
+m,n =np.shape(train_x)
+x=np.ones((m,n+3))
+x=np.column_stack((train_x,train['index'],train['sq_index']))
+
+
+A=x.T.dot(x)
+b=x.T.dot(y)
+z = np.linalg.solve(A,b)
+
+SSE=np.sum((y-x.dot(z))**2)
 
 
 
-![png](Images/output_30_0.png)
+SSE=np.sum((y-x.dot(z))**2)
+SST=sum((y-np.mean(y))**2)[0]
+print("SSE: ",SSE)
+print("SST: ",SST)
+print("R^2: ",1-SSE/SST)
+print("Baseline: ",sum((y-np.mean(y))**2)[0])
+
+plt.plot(train['index'],y,'.')
+plt.plot(train['index'],x.dot(z),'-')
+plt.title("Sinusoidal components: Training")
+plt.show()
+
+plt.scatter(train['index'],y-x.dot(z))
+plt.title("Residuals")
+plt.show()
+
+print("coefficients:")
+print(z)
+print()
+
+y=valid[['Pageviews']].values
+
+m,n =np.shape(valid_x)
+x=np.ones((m,n+3))
+x=np.column_stack((valid_x,valid['index'],valid['sq_index']))
 
 
-There is a slightly overall trend in the residual plot. Including lower frequency components could help stablize errors.
 
-#### How does this measure up to dummy coding the weekday variable?
+A=x.T.dot(x)
+b=x.T.dot(y)
+z = np.linalg.solve(A,b)
+SSE=np.sum((y-x.dot(z))**2)
+SST=sum((y-np.mean(y))**2)[0]
 
-#### Model fitted with dummy coded weekday:
+print("SSE: ",SSE)
+print("SST: ",SST)
+print("R^2: ",1-SSE/SST)
+print("Baseline: ",sum((y-np.mean(y))**2)[0])
 
-    SSE:  1824619798.78
-    SST:  9765197379.99
-    R^2:  0.813150750796
+plt.plot(valid['index'],y,'.')
+plt.plot(valid['index'],x.dot(z),'-')
+plt.title("Sinusoidal components: Validation")
+plt.show()
+
+plt.scatter(valid['index'],y-x.dot(z))
+plt.title("Residuals")
+plt.show()
+```
+
+    SSE:  1929365771.24
+    SST:  8816116516.19
+    R^2:  0.781154687816
+    Baseline:  8816116516.19
+
+
+
+![png](Images/output_25_1.png)
+
+
+
+![png](Images/output_25_2.png)
+
+
+    coefficients:
+    [[  7.92625860e+03]
+     [ -2.64388157e+01]
+     [  5.03642201e+01]
+     [ -3.99517370e+01]
+     [ -1.20650898e+01]
+     [  1.32911733e+03]
+     [ -5.91620396e+18]
+     [ -2.31549084e+03]
+     [  1.42755035e+03]
+     [ -1.70319144e+03]
+     [  1.14467396e+03]
+     [ -1.83271991e+00]
+     [  2.89026574e-02]]
     
-    Coefficients:
-
-    array([[  1.15000991e+04],
-           [ -2.75598163e+03],
-           [ -3.28854678e+03],
-           [ -1.44911713e+03],
-           [ -3.65450388e+03],
-           [ -6.91319555e+03],
-           [ -5.75584347e+03],
-           [  7.94011068e-01],
-           [  2.50742897e-02]])
+    SSE:  744899756.645
+    SST:  2421649439.03
+    R^2:  0.692399839284
+    Baseline:  2421649439.03
 
 
 
-#### Validation
-
-    SSE:  1280695316.78
-    SST:  2180040128.7
-    R^2:  0.412535897884
+![png](Images/output_25_4.png)
 
 
-
-![png](Images/output_35_1.png)
-
+![png](Images/output_25_5.png)
 
 
-![png](Images/output_35_2.png)
+#### Results
 
+The regression model on the training dataset had an R-Squared value of 0.78 with 13 predictor variables (3 sequences 6 frequencies 12 sinusoids). The residual are evenly distributed around zero with a two large outliers. 
+
+The validation dataset had an R-Squared of 0.69. The validation dataset residuals seem to be evenly distributed with a handful of outliers compared to the training dataset residuals.
 
 #### The results are almost (if not) exactly the same, so which method to choose?
-Dummy coding can be automated and advantage of dummy coding is that its more difficult to go wrong by including every level of the variable. With the signal processing approach, the frequencies need to be chosen for the seasonal components which requires some inspection and maybe some trial and error. The plus side is that you can choose which periods make sense and you can choose frequencies for trend component while you work on the seasonal part.
 
-All in all, both methods ended up with the same number of parameters and had the same performance.
+Dummy coding can be automated, but its not always easy to type every variable to include in a linear model. In addition, it requires some inpection and trail and error to find the seasonal variable. The advantage of dummy coding is that each level is accounted for and it relatively easy to compare levels.
 
+Signal processing can be used to create seasonal components almost automatically, but it is more computational expensive to calculate. In addition, it is not clear from the coefficients what the seasonal components are. The advantage is that there can be more predictive variables in the model, and the number of sinusodial components can be increased or decreased by adjusting the threshold or bandwith. 
