@@ -14,7 +14,7 @@ The trend and seasonality can be accounted for in a linear model by including si
 
 * N point discrete Fourier transform formula
 
-<img src='DATA/n_point_DFT.png'>
+<img src='Images/n_point_DFT.png'>
 
 1. k ∈ [0,N-1] or k ∈ [−N/2, N/2−1] or k ∈ [−(N−1)/2, (N−1)/2]
 2. N = # of data points
@@ -43,7 +43,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import datetime
 
-full=pd.read_csv("DATA/DSC_Time_Series_Challenge.csv",dtype = {'Day ':str,'Sessions':int,'Pageviews':int})
+full=pd.read_csv("Images/DSC_Time_Series_Challenge.csv",dtype = {'Day ':str,'Sessions':int,'Pageviews':int})
 time=[datetime.datetime.strptime(t[0],"%m/%d/%y") for t in full[['Day ']].values]
 weekday=[datetime.datetime.strptime(t[0],"%m/%d/%y").isocalendar()[2] for t in full[['Day ']].values]
 
@@ -65,7 +65,7 @@ full.head()
 ```
 
 
-![png](output_1_0.png)
+![png](Images/output_1_0.png)
 
 
 
@@ -209,7 +209,7 @@ plt.show()
 ```
 
 
-![png](output_10_0.png)
+![png](Images/output_10_0.png)
 
 
 #### The FFT transformation:
@@ -251,7 +251,7 @@ print(abs_filtered)
 
 
 
-![png](output_12_2.png)
+![png](Images/output_12_2.png)
 
 
     Center frequency:  0.249571183533 Band:  0.143593981673
@@ -290,15 +290,15 @@ valid = DSP.get_sequences(valid,period_list,plot=False)
 
 
 
-![png](output_14_2.png)
+![png](Images/output_14_2.png)
 
 
 
-![png](output_14_3.png)
+![png](Images/output_14_3.png)
 
 
 
-![png](output_14_4.png)
+![png](Images/output_14_4.png)
 
 
 #### Eureka! Weekday (Sequence period = 7) shares the same frequency components as Pageviews!
@@ -500,7 +500,7 @@ print(z)
 
 
 
-![png](output_18_2.png)
+![png](Images/output_18_2.png)
 
 
     frequencies used in  seq_3.0  :  [0.33333333333333331]
@@ -511,7 +511,7 @@ print(z)
 
 
 
-![png](output_18_4.png)
+![png](Images/output_18_4.png)
 
 
     frequencies used in  seq_4.0  :  [0.25]
@@ -527,7 +527,7 @@ print(z)
 
 
 
-![png](output_18_6.png)
+![png](Images/output_18_6.png)
 
 
     frequencies used in  seq_7.0  :  [0.14285714285714285, 0.5, 0.33333333333333331]
@@ -535,7 +535,7 @@ print(z)
 
 
 
-![png](output_18_8.png)
+![png](Images/output_18_8.png)
 
 
     SSE : 6016423835.35
@@ -543,7 +543,7 @@ print(z)
 
 
 
-![png](output_18_10.png)
+![png](Images/output_18_10.png)
 
 
     coefficients: 
@@ -661,11 +661,11 @@ plt.show()
 
 
 
-![png](output_23_1.png)
+![png](Images/output_23_1.png)
 
 
 
-![png](output_23_2.png)
+![png](Images/output_23_2.png)
 
 
     coefficients:
@@ -686,11 +686,11 @@ plt.show()
 
 
 
-![png](output_23_4.png)
+![png](Images/output_23_4.png)
 
 
 
-![png](output_23_5.png)
+![png](Images/output_23_5.png)
 
 
 #### Results
@@ -772,11 +772,11 @@ plt.show()
 
 
 
-![png](output_25_1.png)
+![png](Images/output_25_1.png)
 
 
 
-![png](output_25_2.png)
+![png](Images/output_25_2.png)
 
 
     coefficients:
@@ -801,11 +801,10 @@ plt.show()
 
 
 
-![png](output_25_4.png)
+![png](Images/output_25_4.png)
 
 
-
-![png](output_25_5.png)
+![png](Images/output_25_5.png)
 
 
 #### Results
