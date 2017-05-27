@@ -1,5 +1,5 @@
 
-# How to reconstruct the seasonal patterns from a time-differenced, non-stationary time-series using machine learning
+# How to machine learning can be used to reconstruct seasonal patterns from a time-differenced, non-stationary time-series
 #### by Rohan Kotwani
 
 The original problem statement was given here: http://www.datasciencecentral.com/forum/topics/challenge-of-the-week-identifying-patterns-in-complex-time-series
