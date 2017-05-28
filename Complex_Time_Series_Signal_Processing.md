@@ -14,7 +14,7 @@ The trend and seasonality can be accounted for in a linear model by including si
 
 * N point discrete Fourier transform formula
 
-<img src='DATA/n_point_DFT.png'>
+![png](Images/n_point_DFT.tiff)
 
 1. k ∈ [0,N-1] or k ∈ [−N/2, N/2−1] or k ∈ [−(N−1)/2, (N−1)/2]
 2. N = # of data points
@@ -60,7 +60,7 @@ plt.show()
 ```
 
 
-![png](output_1_0.png)
+![png](Images/output_1_0.png)
 
 
 
@@ -211,7 +211,7 @@ plt.show()
 ```
 
 
-![png](output_11_0.png)
+![png](Images/output_11_0.png)
 
 
 #### The FFT transformation:
@@ -253,7 +253,7 @@ print(abs_filtered)
 
 
 
-![png](output_13_2.png)
+![png](Images/output_13_2.png)
 
 
     Frequency, Magnitude
@@ -299,15 +299,15 @@ valid.head()
 
 
 
-![png](output_15_2.png)
+![png](Images/output_15_2.png)
 
 
 
-![png](output_15_3.png)
+![png](Images/output_15_3.png)
 
 
 
-![png](output_15_4.png)
+![png](Images/output_15_4.png)
 
 
 
@@ -501,7 +501,7 @@ print(z)
 
 
 
-![png](output_18_2.png)
+![png](Images/output_18_2.png)
 
 
     frequencies used in  seq_3.0  :  [0.33333333333333331]
@@ -512,7 +512,7 @@ print(z)
 
 
 
-![png](output_18_4.png)
+![png](Images/output_18_4.png)
 
 
     frequencies used in  seq_4.0  :  [0.25]
@@ -526,7 +526,7 @@ print(z)
 
 
 
-![png](output_18_6.png)
+![png](Images/output_18_6.png)
 
 
     frequencies used in  seq_7.0  :  [0.14285714285714285, 0.5, 0.33333333333333331]
@@ -534,7 +534,7 @@ print(z)
 
 
 
-![png](output_18_8.png)
+![png](Images/output_18_8.png)
 
 
     SSE : 5765825922.99
@@ -542,7 +542,7 @@ print(z)
 
 
 
-![png](output_18_10.png)
+![png](Images/output_18_10.png)
 
 
     coefficients: 
@@ -660,11 +660,11 @@ plt.show()
 
 
 
-![png](output_23_1.png)
+![png](Images/output_23_1.png)
 
 
 
-![png](output_23_2.png)
+![png](Images/output_23_2.png)
 
 
     coefficients:
@@ -686,11 +686,11 @@ plt.show()
 
 
 
-![png](output_23_4.png)
+![png](Images/output_23_4.png)
 
 
 
-![png](output_23_5.png)
+![png](Images/output_23_5.png)
 
 
 #### Results
@@ -767,11 +767,11 @@ plt.show()
 
 
 
-![png](output_25_1.png)
+![png](Images/output_25_1.png)
 
 
 
-![png](output_25_2.png)
+![png](Images/output_25_2.png)
 
 
     [[  7.88822225e+03]
@@ -795,11 +795,11 @@ plt.show()
 
 
 
-![png](output_25_4.png)
+![png](Images/output_25_4.png)
 
 
 
-![png](output_25_5.png)
+![png](Images/output_25_5.png)
 
 
 #### Results
