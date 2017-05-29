@@ -21,10 +21,6 @@ The trend and seasonality can be accounted for in a linear model by including si
 3. n = rank order of input data points
 4. k = rank order of output data points
 
-#### FFT of time differenced signal
-
-![png](Images/TimeDifferenceFFT.tiff)
-
 #### Assumptions
 
 "The Fourier transform assumes that the signal is stationary and that the signals in the sample continue into infinity. The Fourier transform performs poorly when this is not the case."
