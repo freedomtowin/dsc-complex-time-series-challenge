@@ -23,7 +23,7 @@ The trend and seasonality can be accounted for in a linear model by including si
 
 #### FFT of time differenced signal
 
-![png](Images/TimeDifferencedFFT.tiff)
+![png](Images/TimeDifferenceFFT.tiff)
 
 #### Assumptions
 
