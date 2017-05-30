@@ -436,7 +436,7 @@ Each generated sequence will be made into pairs of seasonable components and wil
 
 * Fourier series formula
 
-![png](Images/Fourier_series_formula.tiff)
+![png](Images/Fourier_Series_formula.tiff)
 
 There are 3 sequences included in the model each with a unique t, time index. A period, T, or periods can be used for each sequence. These periods can be found using the same semi-automated techniques used to generate the sequences as described earlier. The threshold can be adjust by the number of standard deviations from the mean of the absolute complex magnitude.
 
