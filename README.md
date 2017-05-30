@@ -492,10 +492,6 @@ print(z)
      [  3.34482759e-01   1.39043662e+02]]
 
 
-    /Users/rohankotwani/anaconda/envs/datasci/lib/python3.5/site-packages/numpy/core/numeric.py:531: ComplexWarning: Casting complex values to real discards the imaginary part
-      return array(a, dtype, copy=False, order=order)
-
-
 
 ![png](Images/output_18_2.png)
 
