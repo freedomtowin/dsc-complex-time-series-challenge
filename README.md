@@ -248,10 +248,6 @@ print(abs_filtered)
     Center frequency:  0.249568221071 Band:  0.14358883867 Threshold:  408.870795735
 
 
-    /Users/rohankotwani/anaconda/envs/datasci/lib/python3.5/site-packages/numpy/core/numeric.py:531: ComplexWarning: Casting complex values to real discards the imaginary part
-      return array(a, dtype, copy=False, order=order)
-
-
 
 ![png](Images/output_13_2.png)
 
@@ -290,10 +286,6 @@ train = DSP.get_sequences(train,period_list,start_index=1,plot=True)
 valid = DSP.get_sequences(valid,period_list,start_index=len(train)+1,plot=False)
 valid.head()
 ```
-
-    /Users/rohankotwani/anaconda/envs/datasci/lib/python3.5/site-packages/numpy/core/numeric.py:531: ComplexWarning: Casting complex values to real discards the imaginary part
-      return array(a, dtype, copy=False, order=order)
-
 
     Sequence list:  {3.0, 4.0, 7.0}
 
