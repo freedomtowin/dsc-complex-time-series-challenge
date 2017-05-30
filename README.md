@@ -440,7 +440,11 @@ The table below shows the index and weekday to help illustrate what the periods 
 
 Since T(t) is already created, this part of the blog will focus on S(t). 
 
-Each seasonal component is made up of two sinusoidal waves, i.e. β1sin(t/T) + β2cos(t/T). The cosine term is include to account for phase shift. The beta coefficients are the estimated parameter weights for each sinusoid. 
+Each generated sequence will be made into pairs of seasonable components and will have at least two components, two sinusoidal waves, i.e. β1sin(t/T) + β2cos(t/T). In fact, the sum of weighted cosine & sine terms for each dominant frequency in the signal can be thought of as a Fourier Series. By estimating the β values, the periodic seasonality present in the signal can be reconstructed.
+
+* Fourier series formula
+
+![png](Images/Fourier_Series_formula.tiff)
 
 There are 3 sequences included in the model each with a unique t, time index. A period, T, or periods can be used for each sequence. These periods can be found using the same semi-automated techniques used to generate the sequences as described earlier. The threshold can be adjust by the number of standard deviations from the mean of the absolute complex magnitude.
 
