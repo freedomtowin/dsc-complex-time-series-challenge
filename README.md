@@ -39,11 +39,9 @@ Objective function: minimize sum of squared errors
 Closed form, least squared solution (Python code):
 ```python
 import numpy as np
-A=x.T.dot(x)
-b=x.T.dot(y)
+A=x.T.dot(x) # x = intercept + predictor columns
+b=x.T.dot(y) # y = target variable
 z = np.linalg.solve(A,b)
-# x = predictor columns
-# y = target variable
 ```
 This works perfectly for a dataset with a smaller number of non-collinear dimensions. However, the numpy algorithm can break with a dataset that has many collinear dimensions.
 
