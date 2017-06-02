@@ -34,6 +34,19 @@ y = T(t) + S(t) + R(t)
 * S(t)~Seasonal component
 * R(t)~Residual error
 
+Objective function: minimize sum of squared errors
+
+Closed form, least squared solution (Python code):
+```python
+import numpy as np
+A=x.T.dot(x)
+b=x.T.dot(y)
+z = np.linalg.solve(A,b)
+# x = predictor columns
+# y = target variable
+```
+This works perfectly for a dataset with a smaller number of non-collinear dimensions. However, the numpy algorithm can break with a dataset that has many collinear dimensions.
+
 For the purposes of this post, we will only focus on the T(t) and S(t) components. 80% of the data or 584 observations were used to create the training set. The model was validated on the remaining 146 observations.
 
 
