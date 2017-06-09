@@ -452,6 +452,14 @@ Each generated sequence will be made into pairs of seasonable components and wil
 There are 3 sequences included in the model each with a unique t, time index. A period, T, or periods can be used for each sequence. These periods can be found using the same semi-automated techniques used to generate the sequences as described earlier. The threshold can be adjust by the number of standard deviations from the mean of the absolute complex magnitude.
 
 
+#### How is this done automatically?
+
+Consider an example where there exists a periodic signal of period 13 inside of the main signal.
+
+Seasonal components are generated automatically by first creating a saw tooth wave with a period of 13. This series represent the time component of a series of sinusoids with various periods. But how do we choose these periods? The saw tooth wave is unique in that each level appears only once in each period. By taking the FFT of this wave, the frequencies of this wave show how many sinusoids are needed to represent the wave at each unique level. By selecting the dominany freuquencies of this wave, a variery of shapes can be create for the seasonal component of period 13. This is accomplished by summing a set of orthogonal sine waves, with different periods, which use the save tooth wave as the time component. The saw tooth wave is used at the time component to force the resultant wave to have a period of 13.
+
+##### Sum of Cosines = β1sin(2*π*x/13) + β2cos(2*π*x/7) + β3cos(2*π*x/4) + β4cos(2*π*x/3) + β5cos(2*π*x/2) , 0 <= x < 13
+
 ```python
 output=train[['Pageviews']]
 y=output.values
@@ -565,6 +573,12 @@ print(z)
 #### Weighted Addition of Seasonal Components
 
 In the regression model, each of these components will get a weight associated with it which can be added together to create a weighted seasonal component. The weighted seasonal component has a pattern similar to that of the Pageviews. 
+
+#### Seasonal Predictors
+
+There are 3 saw tooth sequences included in the model each with a unique t, time index. A saw tooth of period 3 & 4 have only two sinusoids with with periods 0.33 & 0.25, respectively. Finally, a saw tooth wave of period 7 is used inside of 6 sinusoids with periods 0.1428, 0.333, and 0.5.
+
+These periods can be found using the same semi-automated techniques used to generate the sequences as described earlier. The threshold can be adjust by the number of standard deviations from the mean of the absolute complex magnitude.
 
 #### Finding peaks
 
