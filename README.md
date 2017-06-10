@@ -449,9 +449,6 @@ Each generated sequence will be made into pairs of seasonable components and wil
 
 ![png](Images/Fourier_Series_formula.tiff)
 
-There are 3 sequences included in the model each with a unique t, time index. A period, T, or periods can be used for each sequence. These periods can be found using the same semi-automated techniques used to generate the sequences as described earlier. The threshold can be adjust by the number of standard deviations from the mean of the absolute complex magnitude.
-
-
 #### How is this done automatically?
 
 Consider an example where there exists a periodic signal of period 13 inside of the main signal.
