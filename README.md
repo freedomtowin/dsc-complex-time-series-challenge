@@ -25,7 +25,7 @@ The trend and seasonality can be accounted for in a linear model by including si
 
 "The Fourier transform assumes that the signal is stationary and that the signals in the sample continue into infinity. The Fourier transform performs poorly when this is not the case."
 
-A stationary process has a constant mean and variance over time which is a property that the time series doesn't have. A stationary process can be extracted from the time series by creating a time differenced variable. However, the complex magnitudes from the time difference variable does not represent the actual signal. A regression model can then be used to recontruct the magnitudes of this signal.
+A stationary process has a constant mean and variance over time which is a property that most time series don't have. A stationary process can be extracted from the time series by creating a time differenced variable. However, the complex magnitudes from the time difference variable does not represent the actual signal. A regression model can then be used to recontruct the magnitudes of this signal.
 
 #### Defining the model:
 y = T(t) + S(t) + R(t)
